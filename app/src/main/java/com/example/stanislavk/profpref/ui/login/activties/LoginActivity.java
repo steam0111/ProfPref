@@ -1,4 +1,4 @@
-package com.example.stanislavk.profpref.ui.login;
+package com.example.stanislavk.profpref.ui.login.activties;
 
 import android.animation.ValueAnimator;
 import android.support.v7.app.AppCompatActivity;
