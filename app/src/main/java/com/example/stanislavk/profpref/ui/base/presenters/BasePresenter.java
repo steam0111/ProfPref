@@ -12,7 +12,7 @@ import com.example.stanislavk.profpref.di.services.CoreServices;
 
 public class BasePresenter<View extends MvpView> extends MvpPresenter<View> {
 
-    protected CoreServices mCoreServices = new CoreServices();
+    public CoreServices mCoreServices = new CoreServices();
 
     public BasePresenter() {
         super();

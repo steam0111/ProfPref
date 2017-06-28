@@ -11,7 +11,7 @@ import javax.inject.Inject;
 public class CoreServices {
 
     @Inject FireBaseService mFireBaseService;
-    public FireBaseService getDatabaseService () {
+    public FireBaseService getFireBaseService() {
         return mFireBaseService;
     }
 }
