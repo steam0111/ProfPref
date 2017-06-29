@@ -2,6 +2,7 @@ package com.example.stanislavk.profpref.di.modules;
 
 import com.example.stanislavk.profpref.di.services.firebase.FireBaseService;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import javax.inject.Singleton;
 
@@ -16,6 +17,7 @@ public class FirebaseModule {
     @Provides
     @Singleton
     public FireBaseService provideDatabaseService() {
-        return new FireBaseService(FirebaseAuth.getInstance());
+        return new FireBaseService(FirebaseAuth.getInstance(),
+                                   FirebaseDatabase.getInstance().getReference());
     }
 }
