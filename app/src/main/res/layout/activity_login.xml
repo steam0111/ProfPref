@@ -70,5 +70,5 @@
         android:layout_width="105dp"
         android:layout_height="60dp"
         android:background="@drawable/activity_login_cloud"
-        android:layout_centerHorizontal="true"/>
+        android:layout_marginLeft="-120dp"/>
 </RelativeLayout>

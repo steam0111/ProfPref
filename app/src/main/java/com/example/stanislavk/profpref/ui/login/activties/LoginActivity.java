@@ -1,7 +1,11 @@
 package com.example.stanislavk.profpref.ui.login.activties;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -28,6 +32,7 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     @BindView(R.id.et_password) EditText mETpassword;
     @BindView(R.id.btn_login) Button mBTNlogin;
     @BindView(R.id.iv_cloud2) ImageView mIVcloud2;
+    @BindView(R.id.iv_cloud) ImageView mIVcloud1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,24 +42,13 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
 
         mBTNlogin.setOnClickListener(this);
 
-        final ImageView backgroundOne = (ImageView) findViewById(R.id.iv_cloud);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
-        //int width = displayMetrics.widthPixels;
+        int width = displayMetrics.widthPixels;
 
-        final ValueAnimator animator = ValueAnimator.ofFloat(0.0f, 1.0f);
-        animator.setRepeatCount(ValueAnimator.INFINITE);
-        animator.setInterpolator(new LinearInterpolator());
-        animator.setDuration(30000L); //Sets the length of the animation.
-        animator.addUpdateListener(animation -> {
-            final float progress = (float) animation.getAnimatedValue();
-            final float width = displayMetrics.widthPixels;
-            final float translationX = width * progress;
-            backgroundOne.setTranslationX(translationX);
-            mIVcloud2.setTranslationX(translationX);
-        });
-        animator.start();
+        startAnimation(mIVcloud1, width + 450, 25000L, 0);
+        startAnimation(mIVcloud2, width + 450, 25000L, width/2);
     }
 
     @Override
@@ -75,5 +69,22 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
                 mPresenter.login(mETlogin.getText().toString(), mETpassword.getText().toString());
             }
         }
+    }
+    public static void startAnimation(final ImageView iv_view ,
+                                      final float width,
+                                      final long speed,
+                                      final int start_translation_x) {
+        final ValueAnimator animator = ValueAnimator.ofInt(0, 1);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(speed); //Sets the length of the animation.
+
+        animator.addUpdateListener(animation -> {
+            final float progress = animation.getAnimatedFraction();
+            final float translationX = width* progress;
+            iv_view.setTranslationX(translationX);
+        });
+        animator.start();
+        animator.setCurrentPlayTime(start_translation_x * 15);
     }
 }
