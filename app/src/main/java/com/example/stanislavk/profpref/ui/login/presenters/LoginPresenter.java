@@ -24,7 +24,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
   public static final String FIREBASE_STUDENT_COUNTER_LOGIN = "counter_login";
 
   public void login(String login, String passwrod){
-      getViewState().onVisibleProgressBar();
+
       RxFirebaseAuth.signInWithEmailAndPassword(mCoreServices.getFireBaseService().getAuth(), login + LOGIN, passwrod)
             .subscribe(user -> {
                 Query query = mCoreServices.getFireBaseService().getDatabase()
@@ -44,7 +44,6 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                                     .child(FIREBASE_STUDENT_COUNTER_LOGIN), counter).subscribe(
                                     () -> {
                                         getViewState().onNextScreen();
-                                        getViewState().onInvisibleProgressBar();
                                     });
                         } else {
                             HashMap counter_value =  (HashMap) dataSnapshot.getValue();
@@ -55,14 +54,13 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                                     .child(FIREBASE_STUDENT_COUNTER_LOGIN), counter).subscribe(
                                     () -> {
                                         getViewState().onNextScreen();
-                                        getViewState().onInvisibleProgressBar();
                                     });
                         }
-
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        getViewState().onInvisibleProgressBar();
+
                     }
                 });
             });
