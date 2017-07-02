@@ -27,6 +27,7 @@
             android:layout_weight="1"/>
 
         <ImageView
+            android:id="@+id/btn_like"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/layout_pre_test_like"
@@ -73,6 +74,7 @@
             android:layout_weight="1" />
 
         <ImageView
+            android:id="@+id/btn_dislike"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/layout_pre_test_like"
