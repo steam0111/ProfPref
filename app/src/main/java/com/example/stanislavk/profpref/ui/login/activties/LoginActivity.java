@@ -63,6 +63,7 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
         Intent intent = new Intent(this, PreTestActivity.class);
         startActivity(intent);
         Toast.makeText(getBaseContext(),"Авторизация успешна",Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override

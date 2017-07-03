@@ -1,5 +1,7 @@
 package com.example.stanislavk.profpref.ui.login.views;
 
+import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.example.stanislavk.profpref.ui.base.views.BaseView;
 
 /**
@@ -7,8 +9,12 @@ import com.example.stanislavk.profpref.ui.base.views.BaseView;
  */
 
 public interface LoginView extends BaseView {
+    @StateStrategyType(SkipStrategy.class)
     void onNextScreen();
+    @StateStrategyType(SkipStrategy.class)
     void onLoginFailed();
+    @StateStrategyType(SkipStrategy.class)
     void onVisibleProgressBar();
+    @StateStrategyType(SkipStrategy.class)
     void onInVisibleProgressBar();
 }

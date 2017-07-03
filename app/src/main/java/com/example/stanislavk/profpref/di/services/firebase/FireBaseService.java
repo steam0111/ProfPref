@@ -1,5 +1,6 @@
 package com.example.stanislavk.profpref.di.services.firebase;
 
+import com.example.stanislavk.profpref.ui.login.ModelSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -11,9 +12,9 @@ import com.google.firebase.database.DatabaseReference;
 public class FireBaseService {
 
     private FirebaseAuth mAuth;
-    private FirebaseUser mCurrentUser;
     private DatabaseReference mDatabase;
-
+    private String mCurrentUserTest;
+    private ModelSettings mSettingsTest;
     public FireBaseService(FirebaseAuth auth, DatabaseReference database){
         mAuth = auth;
         mDatabase = database;
@@ -24,14 +25,26 @@ public class FireBaseService {
 
 
     public FirebaseUser getCurrentUser() {
-        return mCurrentUser;
-    }
-
-    public void setCurrentUser() {
-        mCurrentUser = mAuth.getCurrentUser();
+        return mAuth.getCurrentUser();
     }
 
     public DatabaseReference getDatabase() {
         return mDatabase;
+    }
+
+    public String getCurrentUserTest() {
+        return mCurrentUserTest;
+    }
+
+    public void setCurrentUserTest(String current_test) {
+        this.mCurrentUserTest = current_test;
+    }
+
+    public ModelSettings getSettingsTest() {
+        return mSettingsTest;
+    }
+
+    public void setSettingsTest(ModelSettings mSettingsTest) {
+        this.mSettingsTest = mSettingsTest;
     }
 }

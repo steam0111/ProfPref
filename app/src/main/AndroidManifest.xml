@@ -24,7 +24,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.pretest.activities.PreTestActivity"></activity>
+        <activity android:name=".ui.pretest.activities.PreTestActivity"
+                  android:screenOrientation="landscape">
+        </activity>
     </application>
 
 </manifest>
