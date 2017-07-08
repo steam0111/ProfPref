@@ -9,12 +9,8 @@ import com.example.stanislavk.profpref.ui.base.views.BaseView;
  */
 
 public interface LoginView extends BaseView {
-    @StateStrategyType(SkipStrategy.class)
     void onNextScreen();
-    @StateStrategyType(SkipStrategy.class)
     void onLoginFailed();
-    @StateStrategyType(SkipStrategy.class)
     void onVisibleProgressBar();
-    @StateStrategyType(SkipStrategy.class)
     void onInVisibleProgressBar();
 }

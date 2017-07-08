@@ -2,7 +2,7 @@ package com.example.stanislavk.profpref.ui.login.presenters;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.example.stanislavk.profpref.ui.base.presenters.BasePresenter;
-import com.example.stanislavk.profpref.ui.login.ModelSettings;
+import com.example.stanislavk.profpref.di.services.firebase.models.ModelSettings;
 import com.example.stanislavk.profpref.ui.login.views.LoginView;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -16,18 +16,18 @@ import java.util.HashMap;
 import durdinapps.rxfirebase2.RxFirebaseAuth;
 import durdinapps.rxfirebase2.RxFirebaseDatabase;
 
+import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENTS;
+import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_COUNTER_LOGIN;
+import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_CURRENT_TEST;
+import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_SETTINGS;
+import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_TESTS;
+import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.LOGIN;
+
 /**
  * Created by LasVegas on 27.06.2017.
  */
 @InjectViewState
 public class LoginPresenter extends BasePresenter<LoginView> {
-
-  public static final String LOGIN = "@gmail.com";
-  public static final String FIREBASE_STUDENTS = "students";
-  public static final String FIREBASE_TESTS = "tests";
-  public static final String FIREBASE_STUDENT_COUNTER_LOGIN = "counter_login";
-  public static final String FIREBASE_STUDENT_CURRENT_TEST = "current_test";
-  public static final String FIREBASE_STUDENT_TEST_SETTINGS = "settings";
 
   public void login(String login, String passwrod){
       getViewState().onVisibleProgressBar();
@@ -111,44 +111,6 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
           }
       });
-      /*Query query = database
-              .child(FIREBASE_STUDENTS)
-              .child(user.getUid())
-              .orderByKey()
-              .equalTo(FIREBASE_TESTS);
-
-      query.addListenerForSingleValueEvent(new ValueEventListener() {
-
-          @Override
-          public void onDataChange(DataSnapshot dataSnapshot) {
-              long counter = 0;
-              if(dataSnapshot.getValue() == null){
-                  RxFirebaseDatabase.setValue(mCoreServices.getFireBaseService().getDatabase().child(FIREBASE_STUDENTS)
-                          .child(user.getUid())
-                          .child(FIREBASE_STUDENT_COUNTER_LOGIN), counter).subscribe(
-                          () -> {
-                              getViewState().onNextScreen();
-                              getViewState().onInVisibleProgressBar();
-                          });
-              } else {
-                  HashMap counter_value =  (HashMap) dataSnapshot.getValue();
-                  counter = (long)counter_value.get(FIREBASE_STUDENT_COUNTER_LOGIN);
-                  counter++;
-                  RxFirebaseDatabase.setValue(mCoreServices.getFireBaseService().getDatabase().child(FIREBASE_STUDENTS)
-                          .child(user.getUid())
-                          .child(FIREBASE_STUDENT_COUNTER_LOGIN), counter).subscribe(
-                          () -> {
-                              getViewState().onNextScreen();
-                              getViewState().onInVisibleProgressBar();
-                          });
-              }
-          }
-
-          @Override
-          public void onCancelled(DatabaseError databaseError) {
-
-          }
-      });*/
   }
 }
 

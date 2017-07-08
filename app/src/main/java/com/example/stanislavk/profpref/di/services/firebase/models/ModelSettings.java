@@ -1,11 +1,11 @@
-package com.example.stanislavk.profpref.ui.login;
+package com.example.stanislavk.profpref.di.services.firebase.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
  * Created by LasVegas on 03.07.2017.
  */
-//@IgnoreExtraProperties
+
 public class ModelSettings {
 
     public boolean btn_results;
