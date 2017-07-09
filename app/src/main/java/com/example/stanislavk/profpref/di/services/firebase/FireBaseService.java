@@ -21,6 +21,7 @@ public class FireBaseService {
     public static final String FIREBASE_STUDENT_CURRENT_TEST = "current_test";
     public static final String FIREBASE_STUDENT_TEST_SETTINGS = "settings";
     public static final String FIREBASE_STUDENT_TEST_MANAGE_BUTTONS = "manage_buttons";
+    public static final String FIREBASE_STUDENT_TEST_PRE_TEST = "pre_test";
 
 
     private FirebaseAuth mAuth;
