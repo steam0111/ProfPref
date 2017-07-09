@@ -2,6 +2,7 @@ package com.example.stanislavk.profpref.ui.pretest.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -18,6 +19,7 @@ import com.example.stanislavk.profpref.di.services.firebase.models.ModelSettings
 import com.example.stanislavk.profpref.ui.base.activities.BaseActivity;
 import com.example.stanislavk.profpref.ui.pretest.presenters.PreTestPresenter;
 import com.example.stanislavk.profpref.ui.pretest.views.PreTestView;
+import com.example.stanislavk.profpref.ui.test.activities.TestActivity;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
@@ -147,7 +149,8 @@ public class PreTestActivity extends BaseActivity implements PreTestView {
 
                                                                         @Override
                                                                         public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-
+                                                                            Intent intent = new Intent(getBaseContext(), TestActivity.class);
+                                                                            startActivity(intent);
                                                                         }
 
                                                                         @Override
@@ -161,7 +164,10 @@ public class PreTestActivity extends BaseActivity implements PreTestView {
                                                                         }
                                                                     })
                                                                     .build();
-                                                     }
+                                                     } else {
+                                                            Intent intent = new Intent(getBaseContext(), TestActivity.class);
+                                                            startActivity(intent);
+                                                        }
                                                     }
 
                                                     @Override
