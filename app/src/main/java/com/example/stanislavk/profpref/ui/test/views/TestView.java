@@ -1,5 +1,7 @@
 package com.example.stanislavk.profpref.ui.test.views;
 
+import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelManageButtons;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelPreTest;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelSettings;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
  */
 
 public interface TestView extends BaseView {
+
+    @StateStrategyType(SkipStrategy.class)
     void onStartTest(ModelSettings settings,
                      ModelManageButtons buttons,
                      StorageReference btnLike,

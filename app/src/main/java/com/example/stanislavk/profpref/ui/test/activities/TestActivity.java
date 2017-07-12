@@ -3,6 +3,8 @@ package com.example.stanislavk.profpref.ui.test.activities;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,7 +49,9 @@ public class TestActivity extends BaseActivity implements TestView {
     @BindView(R.id.tv_title) TextView mTVtitle;
 
     private TestPagerAdapter mPagerAdapter;
-    private int mCurrentItem = 0;
+    private Animation mFadeInAnimation, mFadeOutAnimation;
+
+    private int mCurrentAnimation = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,32 +70,50 @@ public class TestActivity extends BaseActivity implements TestView {
 
             @Override
             public void onPageSelected(int position) {
-                mBTNlike.setVisibility(View.VISIBLE);
-                mBTNdislike.setVisibility(View.VISIBLE);
+               // mBTNlike.setVisibility(View.VISIBLE);
+               // mBTNdislike.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onPageScrolled(int position, float positionOffset,
                                        int positionOffsetPixels) {
-                mBTNlike.setVisibility(View.INVISIBLE);
-                mBTNdislike.setVisibility(View.INVISIBLE);
+               // mBTNlike.setVisibility(View.INVISIBLE);
+               // mBTNdislike.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                mBTNlike.setVisibility(View.VISIBLE);
-                mBTNdislike.setVisibility(View.VISIBLE);
             }
         });
+
+        mFadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fadein);
+        mFadeOutAnimation = AnimationUtils.loadAnimation(this, R.anim.fadeout);
+
+        mFadeInAnimation.setAnimationListener(animationFadeInListener);
+        mFadeOutAnimation.setAnimationListener(animationFadeOutListener);
     }
 
     @OnClick(R.id.btn_like)
     public void like() {
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
+
+        mBTNlike.startAnimation(mFadeOutAnimation);
+
+        mBTNlike.setClickable(false);
+        mBTNdislike.setClickable(false);
+
+        mCurrentAnimation=0;
     }
     @OnClick(R.id.btn_dislike)
     public void dislike() {
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
+
+        mBTNdislike.startAnimation(mFadeOutAnimation);
+
+        mBTNdislike.setClickable(false);
+        mBTNlike.setClickable(false);
+
+        mCurrentAnimation++;
     }
 
     @Override
@@ -138,12 +160,55 @@ public class TestActivity extends BaseActivity implements TestView {
         }
 
         mPagerAdapter.setLinksList(links);
-        mBTNlike.setVisibility(View.VISIBLE);
-        mBTNdislike.setVisibility(View.VISIBLE);
+
+       // mBTNlike.setVisibility(View.VISIBLE);
+        //mBTNdislike.setVisibility(View.VISIBLE);
+
+
     }
 
     @Override
     public void onShowQuestion(StorageReference imgQuestion) {
 
     }
+
+    Animation.AnimationListener animationFadeOutListener = new Animation.AnimationListener() {
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            if (mCurrentAnimation > 0) {
+                mBTNdislike.startAnimation(mFadeInAnimation);
+            } else {
+                mBTNlike.startAnimation(mFadeInAnimation);
+            }
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+            // TODO Auto-generated method stub
+        }
+    };
+
+    Animation.AnimationListener animationFadeInListener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            mBTNlike.setClickable(true);
+            mBTNdislike.setClickable(true);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+            // TODO Auto-generated method stub
+        }
+    };
 }

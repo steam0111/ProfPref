@@ -47,7 +47,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
                   RxFirebaseDatabase.observeSingleValueEvent(userSearchQuery)
                           .subscribe(student -> {
-
+                              if (student.getValue() != null) {
                               String key2 = student.getKey();
                               ModelStudent modelStudent = new ModelStudent();
                               String key = student.getValue().toString().substring(1,student.getValue().toString().indexOf("=", 10));
@@ -106,7 +106,9 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                                               getViewState().onLoginFailed();
                                           }
                                       },throwable -> getViewState().onLoginFailed());
-                          },throwable -> getViewState().onLoginFailed());
+                          } else {
+                                  getViewState().onLoginFailed();
+                              }},throwable -> getViewState().onLoginFailed());
 
               });
   }
