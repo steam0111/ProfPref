@@ -8,13 +8,13 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 public class ModelSettings {
 
-    public boolean btn_results;
-    public boolean progress_bar;
-    public boolean sound;
-    public boolean swap;
-    public boolean swap_arrows;
-    public boolean swap_finger;
-    public boolean text;
+    public String btn_results;
+    public String progress_bar;
+    public String sound;
+    public String swap;
+    public String swap_arrows;
+    public String swap_finger;
+    public String text;
 
     public ModelSettings() {
 

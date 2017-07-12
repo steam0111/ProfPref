@@ -76,6 +76,7 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
         mIVcloud1.setVisibility(View.VISIBLE);
         mTIL_password.setVisibility(View.VISIBLE);
         mTIL_login.setVisibility(View.VISIBLE);
+        onInVisibleProgressBar();
     }
 
     @Override
@@ -88,6 +89,7 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
          mIVcloud1.setVisibility(View.INVISIBLE);
          mTIL_password.setVisibility(View.INVISIBLE);
          mTIL_login.setVisibility(View.INVISIBLE);
+
     }
 
     @Override

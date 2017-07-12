@@ -1,7 +1,13 @@
 package com.example.stanislavk.profpref.di.services.firebase;
 
+import android.content.Context;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelManageButtons;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelSettings;
+import com.example.stanislavk.profpref.di.services.firebase.models.ModelStudent;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +29,8 @@ public class FireBaseService {
     public static final String FIREBASE_STUDENT_TEST_MANAGE_BUTTONS = "manage_buttons";
     public static final String FIREBASE_STUDENT_TEST_PRE_TEST = "pre_test";
 
+    public static final String MAIN_LOGIN = "android@gmail.com";
+    public static final String MAIN_PASSWORD = "eqwdsfSAsadadsAsd1";
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -31,20 +39,28 @@ public class FireBaseService {
     private String mCurrentUserTest;
     private ModelSettings mSettingsTest;
     private ModelManageButtons mModelManageButtons;
+    private ModelStudent mModelStudent;
 
     public FireBaseService(FirebaseAuth auth, DatabaseReference database, FirebaseStorage storageRef){
         mAuth = auth;
         mDatabase = database;
         mStorageRef = storageRef;
     }
+    public static void setImageFromFB(Context context, ImageView imageView, StorageReference storageReference){
+        Glide.with(context)
+                .using(new FirebaseImageLoader())
+                .load(storageReference)
+                .into(imageView);
+    }
     public FirebaseAuth getAuth() {
         return mAuth;
     }
 
 
-    public FirebaseUser getCurrentUser() {
-        return mAuth.getCurrentUser();
+    public ModelStudent getCurrentUser() {
+        return mModelStudent;
     }
+
 
     public DatabaseReference getDatabase() {
         return mDatabase;
@@ -75,5 +91,9 @@ public class FireBaseService {
     }
     public StorageReference getStorageRef() {
         return mStorageRef.getReference();
+    }
+
+    public void setModelStudent(ModelStudent mModelStudent) {
+        this.mModelStudent = mModelStudent;
     }
 }

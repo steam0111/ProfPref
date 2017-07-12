@@ -34,6 +34,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.setImageFromFB;
+
 public class PreTestActivity extends BaseActivity implements PreTestView {
 
     @BindView(R.id.btn_like) ImageView mBTNlike;
@@ -71,9 +73,9 @@ public class PreTestActivity extends BaseActivity implements PreTestView {
         setImageFromFB(this, mBTNdislike, btnDislike);
         setImageFromFB(this, mBTNstopTest, btnStopTest);
 
-        if (settings.text) {
+        if (settings.text.equals("true")) {
             mTVtitle.setVisibility(View.VISIBLE);
-            mIsText = settings.text;
+            //mIsText = settings.text;
         } else {
             mTVtitle.setVisibility(View.GONE);
 
@@ -82,7 +84,7 @@ public class PreTestActivity extends BaseActivity implements PreTestView {
             preTest.title_text_btn_dislike = "";
             preTest.description_text_btn_dislike = "";
         }
-        if (settings.swap) {
+        if (settings.swap.equals("true")) {
             setImageFromFB(this, mBTNlefttArrow, btnLeftArrow);
             setImageFromFB(this, mBTNrightArrow, btnRightArrow);
         } else {
@@ -128,7 +130,7 @@ public class PreTestActivity extends BaseActivity implements PreTestView {
                                                     @Override
                                                     public void onShowcaseViewHide(ShowcaseView showcaseView) {
 
-                                                        if (settings.swap) {
+                                                        if (settings.swap.equals("true")) {
                                                             new ShowcaseView.Builder(mActivity)
                                                                     .setTarget(targetBTNback)
                                                                     //.setContentTitle(preTest.title_text_btn_dislike)
@@ -223,12 +225,5 @@ public class PreTestActivity extends BaseActivity implements PreTestView {
                     }
                 })
                 .build();
-    }
-
-    public void setImageFromFB(Context context, ImageView imageView, StorageReference storageReference){
-        Glide.with(context)
-                .using(new FirebaseImageLoader())
-                .load(storageReference)
-                .into(imageView);
     }
 }

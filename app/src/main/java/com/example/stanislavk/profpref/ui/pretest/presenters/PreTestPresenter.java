@@ -25,7 +25,7 @@ public class PreTestPresenter extends BasePresenter<PreTestView> {
 
        Query manageButtons = mCoreServices.getFireBaseService().getDatabase()
                .child(FIREBASE_STUDENTS)
-               .child(mCoreServices.getFireBaseService().getCurrentUser().getUid())
+               .child(mCoreServices.getFireBaseService().getCurrentUser().getKey())
                .child(FIREBASE_TESTS)
                .child(mCoreServices.getFireBaseService().getCurrentUserTest())
                .child(FIREBASE_STUDENT_TEST_MANAGE_BUTTONS);
@@ -36,7 +36,7 @@ public class PreTestPresenter extends BasePresenter<PreTestView> {
 
                    Query preTest = mCoreServices.getFireBaseService().getDatabase()
                            .child(FIREBASE_STUDENTS)
-                           .child(mCoreServices.getFireBaseService().getCurrentUser().getUid())
+                           .child(mCoreServices.getFireBaseService().getCurrentUser().getKey())
                            .child(FIREBASE_TESTS)
                            .child(mCoreServices.getFireBaseService().getCurrentUserTest())
                            .child(FIREBASE_STUDENT_TEST_PRE_TEST);
