@@ -153,6 +153,7 @@ public class PreTestActivity extends BaseActivity implements PreTestView {
                                                                         public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
                                                                             Intent intent = new Intent(getBaseContext(), TestActivity.class);
                                                                             startActivity(intent);
+                                                                            finish();
                                                                         }
 
                                                                         @Override
@@ -169,6 +170,7 @@ public class PreTestActivity extends BaseActivity implements PreTestView {
                                                      } else {
                                                             Intent intent = new Intent(getBaseContext(), TestActivity.class);
                                                             startActivity(intent);
+                                                            finish();
                                                         }
                                                     }
 
