@@ -3,13 +3,13 @@
     android:shareInterpolator="false" >
 
     <alpha
-        android:duration="700"
+        android:duration="500"
         android:fromAlpha="1.0"
         android:toAlpha="0.0" >
     </alpha>
 
     <scale
-        android:duration="1200"
+        android:duration="1000"
         android:fromXScale="1.0"
         android:fromYScale="1.0"
         android:pivotX="50%"

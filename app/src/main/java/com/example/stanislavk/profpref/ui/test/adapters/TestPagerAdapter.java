@@ -4,8 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelCategories;
-import com.example.stanislavk.profpref.ui.test.fragments.FragmentTest;
+import com.example.stanislavk.profpref.ui.test.fragments.TestQuestionFragment;
 
 import java.util.ArrayList;
 
@@ -24,7 +23,7 @@ public class TestPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return FragmentTest.newInstance(position,mListLinks.get(position));
+        return TestQuestionFragment.newInstance(position,mListLinks.get(position));
     }
 
     @Override

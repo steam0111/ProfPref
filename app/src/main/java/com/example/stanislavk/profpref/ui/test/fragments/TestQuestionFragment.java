@@ -1,21 +1,14 @@
 package com.example.stanislavk.profpref.ui.test.fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.stanislavk.profpref.R;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
-import java.util.Random;
-
-import butterknife.ButterKnife;
 
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.setImageFromFB;
 
@@ -23,14 +16,14 @@ import static com.example.stanislavk.profpref.di.services.firebase.FireBaseServi
  * Created by LasVegas on 09.07.2017.
  */
 
-public class FragmentTest extends Fragment {
+public class TestQuestionFragment extends Fragment {
 
     static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
     static final String ARGUMENT_LINK_PICTURE = "link";
     private ImageView mIVpicture;
 
-    public static FragmentTest newInstance(int page, String linkPicture) {
-        FragmentTest pageFragment = new FragmentTest();
+    public static TestQuestionFragment newInstance(int page, String linkPicture) {
+        TestQuestionFragment pageFragment = new TestQuestionFragment();
         Bundle arguments = new Bundle();
 
         arguments.putInt(ARGUMENT_PAGE_NUMBER, page);

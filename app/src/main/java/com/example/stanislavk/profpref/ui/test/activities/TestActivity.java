@@ -1,8 +1,11 @@
 package com.example.stanislavk.profpref.ui.test.activities;
 
+import android.animation.LayoutTransition;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -18,6 +21,7 @@ import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelQue
 import com.example.stanislavk.profpref.ui.base.activities.BaseActivity;
 import com.example.stanislavk.profpref.ui.test.adapters.TestPagerAdapter;
 import com.example.stanislavk.profpref.ui.test.custom.ViewPagerCustomDuration;
+import com.example.stanislavk.profpref.ui.test.models.TestAnswerModel;
 import com.example.stanislavk.profpref.ui.test.presenters.TestPresenter;
 import com.example.stanislavk.profpref.ui.test.views.TestView;
 import com.google.firebase.storage.StorageReference;
@@ -70,8 +74,7 @@ public class TestActivity extends BaseActivity implements TestView {
 
             @Override
             public void onPageSelected(int position) {
-               // mBTNlike.setVisibility(View.VISIBLE);
-               // mBTNdislike.setVisibility(View.VISIBLE);
+                mTVtitle.setText(mPresenter.getAnswers().get(position).getTitle());
             }
 
             @Override
@@ -91,6 +94,11 @@ public class TestActivity extends BaseActivity implements TestView {
 
         mFadeInAnimation.setAnimationListener(animationFadeInListener);
         mFadeOutAnimation.setAnimationListener(animationFadeOutListener);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            ((ViewGroup) findViewById(R.id.ll_middle)).getLayoutTransition()
+                    .enableTransitionType(LayoutTransition.CHANGING);
+        }
     }
 
     @OnClick(R.id.btn_like)
@@ -103,6 +111,8 @@ public class TestActivity extends BaseActivity implements TestView {
         mBTNdislike.setClickable(false);
 
         mCurrentAnimation=0;
+
+        mPresenter.setAnswer(mVPtest.getCurrentItem(), 1);
     }
     @OnClick(R.id.btn_dislike)
     public void dislike() {
@@ -114,6 +124,8 @@ public class TestActivity extends BaseActivity implements TestView {
         mBTNlike.setClickable(false);
 
         mCurrentAnimation++;
+
+        mPresenter.setAnswer(mVPtest.getCurrentItem(), -1);
     }
 
     @Override
@@ -126,7 +138,8 @@ public class TestActivity extends BaseActivity implements TestView {
                             StorageReference btnStopTest,
                             ArrayList<ModelCategories> ListCategories,
                             String key,
-                            String currentTest) {
+                            String currentTest,
+                            int currentQuestion) {
 
         setImageFromFB(this, mBTNlike, btnLike);
         setImageFromFB(this, mBTNdislike, btnDislike);
@@ -144,27 +157,39 @@ public class TestActivity extends BaseActivity implements TestView {
             mBTNlefttArrow.setVisibility(View.INVISIBLE);
             mBTNrightArrow.setVisibility(View.INVISIBLE);
         }
+
+
         ArrayList <String> links = new ArrayList<>();
+        ArrayList <TestAnswerModel> answers = new ArrayList<>();
+
         int catCounter = 0;
         for (ModelCategories categories : ListCategories){
             int quesCounter = 0;
             for (ModelQuestion question : categories.getQuestions()) {
+                TestAnswerModel answerModel = new TestAnswerModel();
+
                 String link = FIREBASE_TESTS + "/"
                         + currentTest+ "/"
                         + catCounter+ "/"
                         + quesCounter;
+
+                answerModel.setCategory(categories.getNameCategory());
+                answerModel.setFirebasePictureLink(link);
+                answerModel.setTitle(question.getTitle());
+
                 links.add(link);
+                answers.add(answerModel);
+
                 quesCounter++;
             }
             catCounter++;
         }
 
         mPagerAdapter.setLinksList(links);
+        mPresenter.setAnswers(answers);
 
-       // mBTNlike.setVisibility(View.VISIBLE);
-        //mBTNdislike.setVisibility(View.VISIBLE);
-
-
+        mVPtest.setCurrentItem(currentQuestion);
+        mTVtitle.setText(mPresenter.getAnswers().get(0).getTitle());
     }
 
     @Override

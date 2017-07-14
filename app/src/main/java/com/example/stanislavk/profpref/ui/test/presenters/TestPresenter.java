@@ -2,14 +2,14 @@ package com.example.stanislavk.profpref.ui.test.presenters;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelManageButtons;
-import com.example.stanislavk.profpref.di.services.firebase.models.ModelPreTest;
 import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelCategories;
 import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelQuestion;
-import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelTest;
+import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelStateTesting;
 import com.example.stanislavk.profpref.ui.base.presenters.BasePresenter;
-import com.example.stanislavk.profpref.ui.pretest.views.PreTestView;
+import com.example.stanislavk.profpref.ui.test.models.TestAnswerModel;
 import com.example.stanislavk.profpref.ui.test.views.TestView;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import durdinapps.rxfirebase2.RxFirebaseDatabase;
 
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENTS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_MANAGE_BUTTONS;
-import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_PRE_TEST;
+import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_STATE;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_TESTS;
 
 /**
@@ -26,6 +26,9 @@ import static com.example.stanislavk.profpref.di.services.firebase.FireBaseServi
  */
 @InjectViewState
 public class TestPresenter extends BasePresenter<TestView> {
+
+    private ArrayList<TestAnswerModel> mAnswers = new ArrayList<>();
+    private ModelStateTesting mModelStateTesting = new ModelStateTesting();
 
     public void getAllsettingsTest(){
 
@@ -88,10 +91,37 @@ public class TestPresenter extends BasePresenter<TestView> {
                                                 .child("stop.png"),
                                         ListCategories,
                                         mCoreServices.getFireBaseService().getCurrentUser().getKey(),
-                                        mCoreServices.getFireBaseService().getCurrentUserTest()
+                                        mCoreServices.getFireBaseService().getCurrentUserTest(),
+                                        Integer.parseInt(mCoreServices.getFireBaseService().getModelStateTesting().current_question)
                                 );
                             });
                 },trowable -> {
+
+                });
+    }
+
+    public ArrayList<TestAnswerModel> getAnswers() {
+        return mAnswers;
+    }
+
+    public void setAnswers(ArrayList<TestAnswerModel> mAnswers) {
+        this.mAnswers = mAnswers;
+    }
+
+    public void setAnswer(int pos, int answer){
+        TestAnswerModel answerModel = mAnswers.get(pos);
+        answerModel.setAnswer(answer);
+
+        DatabaseReference query = mCoreServices.getFireBaseService().getDatabase()
+                .child(FIREBASE_STUDENTS)
+                .child(mCoreServices.getFireBaseService().getCurrentUser().getKey())
+                .child(FIREBASE_STUDENT_TEST_STATE);
+
+        mModelStateTesting.state = "active";
+        mModelStateTesting.current_question = pos + "";
+
+        RxFirebaseDatabase.setValue(query, mModelStateTesting)
+                .subscribe(()->{
 
                 });
     }

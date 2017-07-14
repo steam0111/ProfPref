@@ -23,6 +23,7 @@ import com.example.stanislavk.profpref.ui.base.activities.BaseActivity;
 import com.example.stanislavk.profpref.ui.login.presenters.LoginPresenter;
 import com.example.stanislavk.profpref.ui.login.views.LoginView;
 import com.example.stanislavk.profpref.ui.pretest.activities.PreTestActivity;
+import com.example.stanislavk.profpref.ui.test.activities.TestActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -95,6 +96,12 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     @Override
     public void onInVisibleProgressBar() {
         mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+    }
+
+    @Override
+    public void onTestScreen() {
+        Intent intent = new Intent(this, TestActivity.class);
+        startActivity(intent);
     }
 
     @Override

@@ -27,7 +27,8 @@ public interface TestView extends BaseView {
                      StorageReference btnStopTest,
                      ArrayList<ModelCategories> ListCategories,
                      String key,
-                     String currentTest);
+                     String currentTest,
+                     int currentQuestion);
 
     void onShowQuestion(StorageReference imgQuestion);
 }

@@ -13,4 +13,5 @@ public interface LoginView extends BaseView {
     void onLoginFailed();
     void onVisibleProgressBar();
     void onInVisibleProgressBar();
+    void onTestScreen();
 }

@@ -4,8 +4,8 @@ import com.arellomobile.mvp.InjectViewState;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelStudent;
 import com.example.stanislavk.profpref.ui.base.presenters.BasePresenter;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelSettings;
+import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelStateTesting;
 import com.example.stanislavk.profpref.ui.login.views.LoginView;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,10 +21,9 @@ import static com.example.stanislavk.profpref.di.services.firebase.FireBaseServi
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_COUNTER_LOGIN;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_CURRENT_TEST;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_SETTINGS;
+import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_STATE;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_TESTS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.LOGIN;
-import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.MAIN_LOGIN;
-import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.MAIN_PASSWORD;
 
 /**
  * Created by LasVegas on 27.06.2017.
@@ -133,9 +132,10 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                   @Override
                   public void onDataChange(DataSnapshot dataSnapshot) {
                       if(dataSnapshot.getValue() != null) {
+
                           mCoreServices.getFireBaseService().setSettingsTest(dataSnapshot.getValue(ModelSettings.class));
-                          getViewState().onNextScreen();
-                          getViewState().onInVisibleProgressBar();
+
+                          setCurrentStayTest(database, key);
                        }
                       }
 
@@ -152,6 +152,29 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
           }
       });
+  }
+
+  public void setCurrentStayTest(DatabaseReference database, String key){
+
+      Query query = database
+              .child(FIREBASE_STUDENTS)
+              .child(key)
+              .child(FIREBASE_STUDENT_TEST_STATE);
+
+      RxFirebaseDatabase.observeSingleValueEvent(query, ModelStateTesting.class)
+              .subscribe(modelStateTesting -> {
+
+                  mCoreServices.getFireBaseService().setModelStateTesting(modelStateTesting);
+
+                  if (modelStateTesting.state.equals("active")) {
+                      getViewState().onTestScreen();
+                      getViewState().onInVisibleProgressBar();
+                  } else {
+                      getViewState().onNextScreen();
+                      getViewState().onInVisibleProgressBar();
+                  }
+              });
+
   }
 }
 

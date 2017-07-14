@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelManageButtons;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelSettings;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelStudent;
+import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelStateTesting;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,6 +29,9 @@ public class FireBaseService {
     public static final String FIREBASE_STUDENT_TEST_SETTINGS = "settings";
     public static final String FIREBASE_STUDENT_TEST_MANAGE_BUTTONS = "manage_buttons";
     public static final String FIREBASE_STUDENT_TEST_PRE_TEST = "pre_test";
+    public static final String FIREBASE_STUDENT_TEST_STATE = "student_state";
+
+
 
     public static final String MAIN_LOGIN = "android@gmail.com";
     public static final String MAIN_PASSWORD = "eqwdsfSAsadadsAsd1";
@@ -40,6 +44,7 @@ public class FireBaseService {
     private ModelSettings mSettingsTest;
     private ModelManageButtons mModelManageButtons;
     private ModelStudent mModelStudent;
+    private ModelStateTesting mModelStateTesting;
 
     public FireBaseService(FirebaseAuth auth, DatabaseReference database, FirebaseStorage storageRef){
         mAuth = auth;
@@ -95,5 +100,13 @@ public class FireBaseService {
 
     public void setModelStudent(ModelStudent mModelStudent) {
         this.mModelStudent = mModelStudent;
+    }
+
+    public ModelStateTesting getModelStateTesting() {
+        return mModelStateTesting;
+    }
+
+    public void setModelStateTesting(ModelStateTesting mModelStateTesting) {
+        this.mModelStateTesting = mModelStateTesting;
     }
 }
