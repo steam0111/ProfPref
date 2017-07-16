@@ -30,6 +30,7 @@ public class FireBaseService {
     public static final String FIREBASE_STUDENT_TEST_MANAGE_BUTTONS = "manage_buttons";
     public static final String FIREBASE_STUDENT_TEST_PRE_TEST = "pre_test";
     public static final String FIREBASE_STUDENT_TEST_STATE = "student_state";
+    public static final String FIREBASE_STUDENT_TESTS_RESULTS = "results";
 
 
 

@@ -8,6 +8,7 @@ public class ModelStateTesting {
 
     public String current_question;
     public String state;
+    public String current_result;
 
     public ModelStateTesting() {
 

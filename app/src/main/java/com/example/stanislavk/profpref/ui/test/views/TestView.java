@@ -31,4 +31,5 @@ public interface TestView extends BaseView {
                      int currentQuestion);
 
     void onShowQuestion(StorageReference imgQuestion);
+    void onNextScreen();
 }

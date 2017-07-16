@@ -18,6 +18,7 @@ import durdinapps.rxfirebase2.RxFirebaseDatabase;
 
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENTS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_MANAGE_BUTTONS;
+import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TESTS_RESULTS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_STATE;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_TESTS;
 
@@ -109,6 +110,7 @@ public class TestPresenter extends BasePresenter<TestView> {
     }
 
     public void setAnswer(int pos, int answer){
+
         TestAnswerModel answerModel = mAnswers.get(pos);
         answerModel.setAnswer(answer);
 
@@ -119,10 +121,25 @@ public class TestPresenter extends BasePresenter<TestView> {
 
         mModelStateTesting.state = "active";
         mModelStateTesting.current_question = pos + "";
+        mModelStateTesting.current_result = mCoreServices.getFireBaseService().getModelStateTesting().current_result;
 
         RxFirebaseDatabase.setValue(query, mModelStateTesting)
                 .subscribe(()->{
 
+                    DatabaseReference result = mCoreServices.getFireBaseService().getDatabase()
+                            .child(FIREBASE_STUDENTS)
+                            .child(mCoreServices.getFireBaseService().getCurrentUser().getKey())
+                            .child(FIREBASE_TESTS)
+                            .child(mCoreServices.getFireBaseService().getCurrentUserTest())
+                            .child(FIREBASE_STUDENT_TESTS_RESULTS)
+                            .child(mCoreServices.getFireBaseService().getModelStateTesting().current_result);
+
+                    RxFirebaseDatabase.setValue(result.child(pos + ""), answerModel)
+                            .subscribe(()->{
+                                if (pos == (mAnswers.size() - 1)) {
+                                    getViewState().onNextScreen();
+                                }
+                            });
                 });
     }
 }

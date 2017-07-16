@@ -1,6 +1,7 @@
 package com.example.stanislavk.profpref.ui.test.activities;
 
 import android.animation.LayoutTransition;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -19,6 +20,7 @@ import com.example.stanislavk.profpref.di.services.firebase.models.ModelSettings
 import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelCategories;
 import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelQuestion;
 import com.example.stanislavk.profpref.ui.base.activities.BaseActivity;
+import com.example.stanislavk.profpref.ui.results.activities.ResultsActivity;
 import com.example.stanislavk.profpref.ui.test.adapters.TestPagerAdapter;
 import com.example.stanislavk.profpref.ui.test.custom.ViewPagerCustomDuration;
 import com.example.stanislavk.profpref.ui.test.models.TestAnswerModel;
@@ -195,6 +197,12 @@ public class TestActivity extends BaseActivity implements TestView {
     @Override
     public void onShowQuestion(StorageReference imgQuestion) {
 
+    }
+
+    @Override
+    public void onNextScreen() {
+        Intent intent = new Intent(this, ResultsActivity.class);
+        startActivity(intent);
     }
 
     Animation.AnimationListener animationFadeOutListener = new Animation.AnimationListener() {

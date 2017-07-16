@@ -30,6 +30,9 @@
         <activity android:name=".ui.test.activities.TestActivity"
             android:screenOrientation="landscape">
         </activity>
+        <activity android:name=".ui.results.activities.ResultsActivity"
+            android:screenOrientation="landscape">
+        </activity>
     </application>
 
 </manifest>
