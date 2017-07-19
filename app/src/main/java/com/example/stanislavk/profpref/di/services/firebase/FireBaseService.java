@@ -30,8 +30,13 @@ public class FireBaseService {
     public static final String FIREBASE_STUDENT_TEST_MANAGE_BUTTONS = "manage_buttons";
     public static final String FIREBASE_STUDENT_TEST_PRE_TEST = "pre_test";
     public static final String FIREBASE_STUDENT_TEST_STATE = "student_state";
-    public static final String FIREBASE_STUDENT_TESTS_RESULTS = "results";
+    public static final String FIREBASE_STUDENT_TEST_STATE_STATE = "state";
 
+    public static final String FIREBASE_STUDENT_TESTS_RESULTS = "results";
+    public static final String FIREBASE_STUDENT_TESTS_RESULTS_CATEGORY = "category";
+
+    public static final String FIREBASE_STUDENT_STATE_ON_TEST = "test";
+    public static final String FIREBASE_STUDENT_STATE_ON_RESULT = "result";
 
 
     public static final String MAIN_LOGIN = "android@gmail.com";

@@ -10,8 +10,9 @@ import com.example.stanislavk.profpref.ui.base.views.BaseView;
 
 public interface LoginView extends BaseView {
     void onNextScreen();
-    void onLoginFailed();
     void onVisibleProgressBar();
     void onInVisibleProgressBar();
     void onTestScreen();
+    void onResultScreen();
+    void onShowInfoMsg(String msg);
 }

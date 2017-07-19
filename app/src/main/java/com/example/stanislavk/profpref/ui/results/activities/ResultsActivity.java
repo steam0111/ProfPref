@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.bumptech.glide.Glide;
@@ -72,6 +73,7 @@ public class ResultsActivity extends BaseActivity implements ResultsView {
         setContentView(R.layout.activity_result);
         ButterKnife.bind(this);
 
+        mPresenter.setCurrentState();
         mPresenter.onLoadLinksCategory();
         mPresenter.getSettingsTest();
 
@@ -108,14 +110,21 @@ public class ResultsActivity extends BaseActivity implements ResultsView {
             setImageFromFB(this, mBTNlefttArrow, btnLeftArrow);
             setImageFromFB(this, mBTNrightArrow, btnRightArrow);
         } else {
-            mBTNlefttArrow.setVisibility(View.INVISIBLE);
-            mBTNrightArrow.setVisibility(View.INVISIBLE);
+            mBTNlefttArrow.setVisibility(View.GONE);
+            mBTNrightArrow.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onNextScreen() {
+        Toast.makeText(getBaseContext(),"Есть контакт",Toast.LENGTH_SHORT).show();
     }
 
 
     @OnClick(R.id.btn_like)
     public void like() {
+        mPresenter.setAnswer(mVPtest.getCurrentItem(), 1);
+
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
 
         mBTNlike.startAnimation(mFadeOutAnimation);
@@ -124,11 +133,11 @@ public class ResultsActivity extends BaseActivity implements ResultsView {
         mBTNdislike.setClickable(false);
 
         mCurrentAnimation=0;
-
-        //mPresenter.setAnswer(mVPtest.getCurrentItem(), 1);
     }
     @OnClick(R.id.btn_dislike)
     public void dislike() {
+        mPresenter.setAnswer(mVPtest.getCurrentItem(), -1);
+
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
 
         mBTNdislike.startAnimation(mFadeOutAnimation);
@@ -137,8 +146,6 @@ public class ResultsActivity extends BaseActivity implements ResultsView {
         mBTNlike.setClickable(false);
 
         mCurrentAnimation++;
-
-        //mPresenter.setAnswer(mVPtest.getCurrentItem(), -1);
     }
 
     Animation.AnimationListener animationFadeOutListener = new Animation.AnimationListener() {

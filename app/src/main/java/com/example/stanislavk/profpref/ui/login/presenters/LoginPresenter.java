@@ -20,6 +20,8 @@ import durdinapps.rxfirebase2.RxFirebaseDatabase;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENTS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_COUNTER_LOGIN;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_CURRENT_TEST;
+import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_STATE_ON_RESULT;
+import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_STATE_ON_TEST;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_SETTINGS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_STATE;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_TESTS;
@@ -39,6 +41,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
       RxFirebaseAuth.signInWithEmailAndPassword(mCoreServices.getFireBaseService().getAuth(),"android@gmail.com", "eqwdsfSAsadadsAsd1")
               .subscribe(admin -> {
 
+                  getViewState().onShowInfoMsg("Соединение с бд установлено");
+
                   Query userSearchQuery =  mCoreServices.getFireBaseService().getDatabase()
                           .child(FIREBASE_STUDENTS)
                           .orderByChild("login")
@@ -47,6 +51,9 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                   RxFirebaseDatabase.observeSingleValueEvent(userSearchQuery)
                           .subscribe(student -> {
                               if (student.getValue() != null) {
+
+
+
                               String key2 = student.getKey();
                               ModelStudent modelStudent = new ModelStudent();
                               String key = student.getValue().toString().substring(1,student.getValue().toString().indexOf("=", 10));
@@ -59,8 +66,10 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
                               RxFirebaseDatabase.observeSingleValueEvent(password, String.class)
                                       .subscribe(uesrPassword -> {
+
                                           if (passwrod.equals(uesrPassword)) {
 
+                                              getViewState().onShowInfoMsg("Успешная авторизация");
                                               mCoreServices.getFireBaseService().setModelStudent(modelStudent);
 
                                               Query query = mCoreServices.getFireBaseService().getDatabase()
@@ -102,12 +111,12 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                                                     }
                                                 });
                                           } else {
-                                              getViewState().onLoginFailed();
+                                              getViewState().onShowInfoMsg("Ошибка логина");
                                           }
-                                      },throwable -> getViewState().onLoginFailed());
+                                      },throwable -> getViewState().onShowInfoMsg("Ошибка логина"));
                           } else {
-                                  getViewState().onLoginFailed();
-                              }},throwable -> getViewState().onLoginFailed());
+                                  getViewState().onShowInfoMsg("Ошибка логина");
+                              }},throwable -> getViewState().onShowInfoMsg("Ошибка логина"));
 
               });
   }
@@ -135,13 +144,15 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
                           mCoreServices.getFireBaseService().setSettingsTest(dataSnapshot.getValue(ModelSettings.class));
 
-                          setCurrentStayTest(database, key);
-                       }
+                          getCurrentStayTest(database, key);
+                       } else {
+                          getViewState().onShowInfoMsg("Ошибка при получение настроек теста");
+                      }
                       }
 
                   @Override
                   public void onCancelled(DatabaseError databaseError) {
-
+                      getViewState().onShowInfoMsg("Ошибка сервера");
                   }
               });
 
@@ -154,7 +165,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
       });
   }
 
-  public void setCurrentStayTest(DatabaseReference database, String key){
+  public void getCurrentStayTest(DatabaseReference database, String key){
 
       Query query = database
               .child(FIREBASE_STUDENTS)
@@ -166,8 +177,11 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
                   mCoreServices.getFireBaseService().setModelStateTesting(modelStateTesting);
 
-                  if (modelStateTesting.state.equals("active")) {
+                  if (modelStateTesting.state.equals(FIREBASE_STUDENT_STATE_ON_TEST)) {
                       getViewState().onTestScreen();
+                      getViewState().onInVisibleProgressBar();
+                  } else if (modelStateTesting.state.equals(FIREBASE_STUDENT_STATE_ON_RESULT)) {
+                      getViewState().onResultScreen();
                       getViewState().onInVisibleProgressBar();
                   } else {
                       getViewState().onNextScreen();

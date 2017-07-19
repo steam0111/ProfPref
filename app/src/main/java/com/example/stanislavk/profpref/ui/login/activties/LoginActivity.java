@@ -23,6 +23,7 @@ import com.example.stanislavk.profpref.ui.base.activities.BaseActivity;
 import com.example.stanislavk.profpref.ui.login.presenters.LoginPresenter;
 import com.example.stanislavk.profpref.ui.login.views.LoginView;
 import com.example.stanislavk.profpref.ui.pretest.activities.PreTestActivity;
+import com.example.stanislavk.profpref.ui.results.activities.ResultsActivity;
 import com.example.stanislavk.profpref.ui.test.activities.TestActivity;
 
 import butterknife.BindView;
@@ -67,18 +68,6 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
         finish();
     }
 
-    @Override
-    public void onLoginFailed() {
-        Toast.makeText(getBaseContext(),"Авторизация провалена",Toast.LENGTH_SHORT).show();
-        mETlogin.setVisibility(View.VISIBLE);
-        mETpassword.setVisibility(View.VISIBLE);
-        mBTNlogin.setVisibility(View.VISIBLE);
-        mIVcloud2.setVisibility(View.VISIBLE);
-        mIVcloud1.setVisibility(View.VISIBLE);
-        mTIL_password.setVisibility(View.VISIBLE);
-        mTIL_login.setVisibility(View.VISIBLE);
-        onInVisibleProgressBar();
-    }
 
     @Override
     public void onVisibleProgressBar() {
@@ -102,6 +91,25 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     public void onTestScreen() {
         Intent intent = new Intent(this, TestActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onResultScreen() {
+        Intent intent = new Intent(this, ResultsActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onShowInfoMsg(String msg) {
+        Toast.makeText(getBaseContext(),msg,Toast.LENGTH_SHORT).show();
+        mETlogin.setVisibility(View.VISIBLE);
+        mETpassword.setVisibility(View.VISIBLE);
+        mBTNlogin.setVisibility(View.VISIBLE);
+        mIVcloud2.setVisibility(View.VISIBLE);
+        mIVcloud1.setVisibility(View.VISIBLE);
+        mTIL_password.setVisibility(View.VISIBLE);
+        mTIL_login.setVisibility(View.VISIBLE);
+        onInVisibleProgressBar();
     }
 
     @Override

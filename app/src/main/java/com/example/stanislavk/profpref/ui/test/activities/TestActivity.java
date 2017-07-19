@@ -105,6 +105,8 @@ public class TestActivity extends BaseActivity implements TestView {
 
     @OnClick(R.id.btn_like)
     public void like() {
+        mPresenter.setAnswer(mVPtest.getCurrentItem(), 1);
+
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
 
         mBTNlike.startAnimation(mFadeOutAnimation);
@@ -113,11 +115,11 @@ public class TestActivity extends BaseActivity implements TestView {
         mBTNdislike.setClickable(false);
 
         mCurrentAnimation=0;
-
-        mPresenter.setAnswer(mVPtest.getCurrentItem(), 1);
     }
     @OnClick(R.id.btn_dislike)
     public void dislike() {
+        mPresenter.setAnswer(mVPtest.getCurrentItem(), -1);
+
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
 
         mBTNdislike.startAnimation(mFadeOutAnimation);
@@ -126,8 +128,6 @@ public class TestActivity extends BaseActivity implements TestView {
         mBTNlike.setClickable(false);
 
         mCurrentAnimation++;
-
-        mPresenter.setAnswer(mVPtest.getCurrentItem(), -1);
     }
 
     @Override
@@ -203,6 +203,7 @@ public class TestActivity extends BaseActivity implements TestView {
     public void onNextScreen() {
         Intent intent = new Intent(this, ResultsActivity.class);
         startActivity(intent);
+        finish();
     }
 
     Animation.AnimationListener animationFadeOutListener = new Animation.AnimationListener() {

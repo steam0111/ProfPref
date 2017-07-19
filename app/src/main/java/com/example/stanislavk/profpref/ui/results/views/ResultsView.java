@@ -23,4 +23,6 @@ public interface ResultsView extends BaseView{
                         StorageReference btnLeftArrow,
                         StorageReference btnRightArrow,
                         StorageReference btnStopTest);
+
+    void onNextScreen();
 }

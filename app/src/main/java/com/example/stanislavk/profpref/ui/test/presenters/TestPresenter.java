@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import durdinapps.rxfirebase2.RxFirebaseDatabase;
 
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENTS;
+import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_STATE_ON_TEST;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_MANAGE_BUTTONS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TESTS_RESULTS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_STATE;
@@ -119,7 +120,7 @@ public class TestPresenter extends BasePresenter<TestView> {
                 .child(mCoreServices.getFireBaseService().getCurrentUser().getKey())
                 .child(FIREBASE_STUDENT_TEST_STATE);
 
-        mModelStateTesting.state = "active";
+        mModelStateTesting.state = FIREBASE_STUDENT_STATE_ON_TEST;
         mModelStateTesting.current_question = pos + "";
         mModelStateTesting.current_result = mCoreServices.getFireBaseService().getModelStateTesting().current_result;
 
