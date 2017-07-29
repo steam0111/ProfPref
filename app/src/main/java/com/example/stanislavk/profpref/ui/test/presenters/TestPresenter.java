@@ -110,10 +110,12 @@ public class TestPresenter extends BasePresenter<TestView> {
         this.mAnswers = mAnswers;
     }
 
-    public void setAnswer(int pos, int answer){
+    public void setAnswer(int pos, int answer, float averageHappines, float pushHappines){
 
         TestAnswerModel answerModel = mAnswers.get(pos);
         answerModel.setAnswer(answer);
+        answerModel.setAverageHappines(averageHappines);
+        answerModel.setPushHappines(pushHappines);
 
         DatabaseReference query = mCoreServices.getFireBaseService().getDatabase()
                 .child(FIREBASE_STUDENTS)

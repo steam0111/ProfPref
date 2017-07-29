@@ -147,6 +147,15 @@ public class ResultsActivity extends BaseActivity implements ResultsView {
 
         mCurrentAnimation++;
     }
+    @OnClick(R.id.btn_left_arrow)
+    public void arrowLeft() {
+        mVPtest.setCurrentItem(mVPtest.getCurrentItem() - 1);
+    }
+    @OnClick(R.id.btn_right_arrow)
+    public void arrowRight() {
+        mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
+
+    }
 
     Animation.AnimationListener animationFadeOutListener = new Animation.AnimationListener() {
 

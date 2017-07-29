@@ -100,5 +100,17 @@
             android:layout_marginBottom="10dp"/>
     </LinearLayout>
 
+    <com.example.stanislavk.profpref.utils.CameraSourcePreview
+        android:id="@+id/preview"
+        android:layout_width="1dp"
+        android:layout_height="1dp">
+
+        <!-- <com.google.android.gms.samples.vision.face.facetracker.ui.camera.GraphicOverlay
+             android:id="@+id/faceOverlay"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:visibility="invisible"/>-->
+
+    </com.example.stanislavk.profpref.utils.CameraSourcePreview>
 
 </LinearLayout>
