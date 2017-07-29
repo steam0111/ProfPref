@@ -178,11 +178,29 @@ public class TestActivity extends BaseActivity implements TestView {
 
     @OnClick(R.id.btn_left_arrow)
     public void arrowLeft() {
+        mPresenter.setAnswer(mVPtest.getCurrentItem(), 0, mAverageHappines, mCurrentHappines);
+
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() - 1);
     }
     @OnClick(R.id.btn_right_arrow)
     public void arrowRight() {
+        mPresenter.setAnswer(mVPtest.getCurrentItem(), 0, mAverageHappines, mCurrentHappines);
+
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
+    }
+    @OnClick(R.id.btn_stop)
+    public void stop() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(TestActivity.this);
+
+        builder.setPositiveButton("Continue", (dialog, id) -> {
+
+        });
+        builder.setNegativeButton("Exit", (dialog, id) -> {
+            finish();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 
@@ -246,8 +264,13 @@ public class TestActivity extends BaseActivity implements TestView {
         mPagerAdapter.setLinksList(links);
         mPresenter.setAnswers(answers);
 
+        if (currentQuestion > 0) {
+            currentQuestion++;
+        }
+
         mVPtest.setCurrentItem(currentQuestion);
-        mTVtitle.setText(mPresenter.getAnswers().get(0).getTitle());
+        mTVtitle.setText(mPresenter.getAnswers().get(currentQuestion).getTitle());
+
     }
 
     @Override
