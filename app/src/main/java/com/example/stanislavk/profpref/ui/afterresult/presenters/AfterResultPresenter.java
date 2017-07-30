@@ -20,8 +20,10 @@ import durdinapps.rxfirebase2.RxFirebaseDatabase;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENTS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_COUNTER_LOGIN;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_CURRENT_TEST;
+import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_STATE_ON_INACTIVE;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_STATE_ON_RESULT;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_STATE_ON_TEST;
+import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TESTS_RESULTS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_SETTINGS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_STATE;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_TESTS;
@@ -32,6 +34,8 @@ import static com.example.stanislavk.profpref.di.services.firebase.FireBaseServi
  */
 @InjectViewState
 public class AfterResultPresenter extends BasePresenter<AfterResultView> {
+
+    private ModelStateTesting mModelStateTesting = new ModelStateTesting();
 
     public void onShowAfterResult() {
         getViewState().onShowResult(
@@ -44,6 +48,30 @@ public class AfterResultPresenter extends BasePresenter<AfterResultView> {
                         .child(mCoreServices.getFireBaseService().getManageButtons().style_image_finish)
                         .child("finish.png")
                 );
+    }
+
+    public void setCurrentState(){
+
+        DatabaseReference query = mCoreServices.getFireBaseService().getDatabase()
+                .child(FIREBASE_STUDENTS)
+                .child(mCoreServices.getFireBaseService().getCurrentUser().getKey())
+                .child(FIREBASE_STUDENT_TEST_STATE);
+
+        mModelStateTesting.state = FIREBASE_STUDENT_STATE_ON_INACTIVE;
+        mModelStateTesting.current_question = "0";
+        mModelStateTesting.current_result = (Integer.parseInt(mCoreServices.getFireBaseService().getModelStateTesting().current_result) + 1) + "";
+
+        RxFirebaseDatabase.setValue(query, mModelStateTesting)
+                .subscribe(()->{
+
+                    DatabaseReference result = mCoreServices.getFireBaseService().getDatabase()
+                            .child(FIREBASE_STUDENTS)
+                            .child(mCoreServices.getFireBaseService().getCurrentUser().getKey())
+                            .child(FIREBASE_TESTS)
+                            .child(mCoreServices.getFireBaseService().getCurrentUserTest())
+                            .child(FIREBASE_STUDENT_TESTS_RESULTS)
+                            .child(mCoreServices.getFireBaseService().getModelStateTesting().current_result);
+                });
     }
 }
 

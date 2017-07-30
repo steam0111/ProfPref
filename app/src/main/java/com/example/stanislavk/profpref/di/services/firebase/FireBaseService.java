@@ -37,6 +37,7 @@ public class FireBaseService {
 
     public static final String FIREBASE_STUDENT_STATE_ON_TEST = "test";
     public static final String FIREBASE_STUDENT_STATE_ON_RESULT = "result";
+    public static final String FIREBASE_STUDENT_STATE_ON_INACTIVE = "inactive";
 
 
     public static final String MAIN_LOGIN = "android@gmail.com";

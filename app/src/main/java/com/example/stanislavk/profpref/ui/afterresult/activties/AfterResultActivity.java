@@ -46,6 +46,7 @@ public class AfterResultActivity extends BaseActivity implements AfterResultView
         setContentView(R.layout.activity_after_result);
         ButterKnife.bind(this);
 
+        mPresenter.setCurrentState();
         mPresenter.onShowAfterResult();
     }
 
