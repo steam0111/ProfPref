@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
@@ -48,6 +49,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,6 +64,8 @@ import static com.example.stanislavk.profpref.di.services.firebase.FireBaseServi
  */
 
 public class TestActivity extends BaseActivity implements TestView {
+
+    private TextToSpeech mTTSobject;
 
     private static final String TAG = "FaceTracker";
     private static final int RC_HANDLE_GMS = 9001;
@@ -102,6 +106,11 @@ public class TestActivity extends BaseActivity implements TestView {
         setContentView(R.layout.activity_test);
         ButterKnife.bind(this);
 
+        mTTSobject = new TextToSpeech(getApplicationContext(), status -> {
+            if(status != TextToSpeech.ERROR) {
+                mTTSobject.setLanguage(new Locale("de_NL"));
+            }
+        });
 
         mPresenter.getAllsettingsTest();
         mVPtest.setScrollDurationFactor(12);
@@ -114,13 +123,14 @@ public class TestActivity extends BaseActivity implements TestView {
             @Override
             public void onPageSelected(int position) {
                 mTVtitle.setText(mPresenter.getAnswers().get(position).getTitle());
+                if (mTTSobject != null) {
+                    mTTSobject.speak(mPresenter.getAnswers().get(position).getTitle(), TextToSpeech.QUEUE_FLUSH, null);
+                }
             }
 
             @Override
             public void onPageScrolled(int position, float positionOffset,
                                        int positionOffsetPixels) {
-               // mBTNlike.setVisibility(View.INVISIBLE);
-               // mBTNdislike.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -192,10 +202,10 @@ public class TestActivity extends BaseActivity implements TestView {
     public void stop() {
         AlertDialog.Builder builder = new AlertDialog.Builder(TestActivity.this);
 
-        builder.setPositiveButton("Continue", (dialog, id) -> {
+        builder.setPositiveButton(R.string.activity_test_dialog_continue, (dialog, id) -> {
 
         });
-        builder.setNegativeButton("Exit", (dialog, id) -> {
+        builder.setNegativeButton(R.string.activity_test_dialog_exit, (dialog, id) -> {
             finish();
         });
 
@@ -454,8 +464,13 @@ public class TestActivity extends BaseActivity implements TestView {
      */
     @Override
     protected void onPause() {
+        if(mTTSobject !=null){
+            mTTSobject.stop();
+            mTTSobject.shutdown();
+        }
         super.onPause();
         mPreview.stop();
+
     }
 
     /**

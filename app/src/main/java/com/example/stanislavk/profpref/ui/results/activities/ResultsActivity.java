@@ -1,6 +1,7 @@
 package com.example.stanislavk.profpref.ui.results.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import com.example.stanislavk.profpref.di.services.firebase.models.ModelPreTest;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelSettings;
 import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelCategories;
 import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelQuestion;
+import com.example.stanislavk.profpref.ui.afterresult.activties.AfterResultActivity;
 import com.example.stanislavk.profpref.ui.base.activities.BaseActivity;
 import com.example.stanislavk.profpref.ui.pretest.presenters.PreTestPresenter;
 import com.example.stanislavk.profpref.ui.pretest.views.PreTestView;
@@ -117,7 +119,9 @@ public class ResultsActivity extends BaseActivity implements ResultsView {
 
     @Override
     public void onNextScreen() {
-        Toast.makeText(getBaseContext(),"Есть контакт",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, AfterResultActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 
@@ -149,13 +153,30 @@ public class ResultsActivity extends BaseActivity implements ResultsView {
     }
     @OnClick(R.id.btn_left_arrow)
     public void arrowLeft() {
+        mPresenter.setAnswer(mVPtest.getCurrentItem(), 0);
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() - 1);
     }
     @OnClick(R.id.btn_right_arrow)
     public void arrowRight() {
+        mPresenter.setAnswer(mVPtest.getCurrentItem(), 0);
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
 
     }
+    @OnClick(R.id.btn_stop)
+    public void stop() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ResultsActivity.this);
+
+        builder.setPositiveButton(R.string.activity_test_dialog_continue, (dialog, id) -> {
+
+        });
+        builder.setNegativeButton(R.string.activity_test_dialog_exit, (dialog, id) -> {
+            finish();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
     Animation.AnimationListener animationFadeOutListener = new Animation.AnimationListener() {
 

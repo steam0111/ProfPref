@@ -3,4 +3,7 @@
 
     <string name="layout_login_error">Login failed</string>
     <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+
+    <string name="activity_test_dialog_exit">exit</string>
+    <string name="activity_test_dialog_continue">continue</string>
 </resources>

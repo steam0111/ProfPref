@@ -33,6 +33,9 @@
         <activity android:name=".ui.results.activities.ResultsActivity"
             android:screenOrientation="landscape">
         </activity>
+        <activity android:name=".ui.afterresult.activties.AfterResultActivity"
+            android:screenOrientation="landscape">
+        </activity>
     </application>
 
 </manifest>
