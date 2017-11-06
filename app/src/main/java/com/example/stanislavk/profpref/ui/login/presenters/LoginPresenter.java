@@ -36,8 +36,6 @@ public class LoginPresenter extends BasePresenter<LoginView> {
   public void login(String login, String passwrod){
       getViewState().onVisibleProgressBar();
 
-      //mCoreServices.getFireBaseService().getAuth(), login + LOGIN, passwrod
-
       RxFirebaseAuth.signInWithEmailAndPassword(mCoreServices.getFireBaseService().getAuth(),"android@gmail.com", "eqwdsfSAsadadsAsd1")
               .subscribe(admin -> {
 
@@ -188,6 +186,10 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                       getViewState().onInVisibleProgressBar();
                   }
               });
+
+  }
+
+  public void getImagesForKeyBoard() {
 
   }
 }

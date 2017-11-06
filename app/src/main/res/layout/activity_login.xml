@@ -1,83 +1,369 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/login_activity_sky_for_back"
     android:paddingTop="25dp"
-    android:background="@drawable/login_activity_sky_for_back">
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="0dp">
 
-    <ProgressBar
+    <!--<ProgressBar
         android:id="@+id/progressBar"
         android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/til_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        app:hintTextAppearance="@style/LoginHintText"
-        android:layout_above="@+id/til_password"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp">
-        <EditText
-            android:id="@+id/et_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:hint="login"
-            android:theme="@style/LoginEditText"
-            android:textColor="@color/orange_600"
-            android:singleLine="true"/>
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/til_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/LoginHintText"
         android:layout_centerVertical="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp">
-        <EditText
-            android:id="@+id/et_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:hint="password"
-            android:inputType="textPassword"
-            android:theme="@style/LoginEditText"
-            android:textColor="@color/orange_600"
-            android:singleLine="true"/>
-    </android.support.design.widget.TextInputLayout>
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp" />-->
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/iv_password_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/activity_login_cell_drawable"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/iv_password_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/iv_password_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/activity_login_cell_drawable"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/iv_password_3"
+        app:layout_constraintStart_toEndOf="@+id/iv_password_1"
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="11dp" />
+
+    <ImageView
+        android:id="@+id/iv_password_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/activity_login_cell_drawable"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/iv_password_4"
+        app:layout_constraintStart_toEndOf="@+id/iv_password_2"
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="11dp" />
+
+    <ImageView
+        android:id="@+id/iv_password_4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/activity_login_cell_drawable"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/iv_password_5"
+        app:layout_constraintStart_toEndOf="@+id/iv_password_3"
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/iv_password_5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/activity_login_cell_drawable"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/iv_password_6"
+        app:layout_constraintStart_toEndOf="@+id/iv_password_4"
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="11dp" />
+
+    <ImageView
+        android:id="@+id/iv_password_6"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/activity_login_cell_drawable"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/iv_password_7"
+        app:layout_constraintStart_toEndOf="@+id/iv_password_5"
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="11dp" />
+
+    <ImageView
+        android:id="@+id/iv_password_7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/activity_login_cell_drawable"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_password_6"
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+    <ImageView
+        android:id="@+id/iv_pass_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/activity_login_cell_drawable"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/iv_pass_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+    <ImageView
+        android:id="@+id/iv_pass_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_pass_1"
+        app:layout_constraintEnd_toStartOf="@+id/iv_pass_3"
+        app:layout_constraintStart_toEndOf="@+id/iv_pass_1"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/activity_login_cell_drawable" />
+
+
+    <ImageView
+        android:id="@+id/iv_pass_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_pass_1"
+        app:layout_constraintEnd_toStartOf="@+id/iv_pass_4"
+        app:layout_constraintStart_toEndOf="@+id/iv_pass_2"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/activity_login_cell_drawable" />
+
+    <ImageView
+        android:id="@+id/iv_pass_4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_pass_1"
+        app:layout_constraintEnd_toStartOf="@+id/iv_pass_5"
+        app:layout_constraintStart_toEndOf="@+id/iv_pass_3"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/activity_login_cell_drawable" />
+
+
+    <ImageView
+        android:id="@+id/iv_pass_5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_pass_1"
+        app:layout_constraintEnd_toStartOf="@+id/iv_pass_6"
+        app:layout_constraintStart_toEndOf="@+id/iv_pass_4"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/activity_login_cell_drawable" />
+
+
+    <ImageView
+        android:id="@+id/iv_pass_6"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_pass_1"
+        app:layout_constraintEnd_toStartOf="@+id/iv_pass_7"
+        app:layout_constraintStart_toEndOf="@+id/iv_pass_5"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/activity_login_cell_drawable" />
+
+
+    <ImageView
+        android:id="@+id/iv_pass_7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_pass_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_pass_6"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/activity_login_cell_drawable" />
+
+
+    <ImageView
+        android:id="@+id/iv_key_board_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toStartOf="@+id/iv_key_board_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+
+    <ImageView
+        android:id="@+id/iv_key_board_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toStartOf="@+id/iv_key_board_3"
+        app:layout_constraintStart_toEndOf="@+id/iv_key_board_1"
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+
+    <ImageView
+        android:id="@+id/iv_key_board_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toStartOf="@+id/iv_key_board_4"
+        app:layout_constraintStart_toEndOf="@+id/iv_key_board_2"
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+
+    <ImageView
+        android:id="@+id/iv_key_board_4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toStartOf="@+id/iv_key_board_5"
+        app:layout_constraintStart_toEndOf="@+id/iv_key_board_3"
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+
+    <ImageView
+        android:id="@+id/iv_key_board_5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toStartOf="@+id/iv_key_board_6"
+        app:layout_constraintStart_toEndOf="@+id/iv_key_board_4"
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+
+    <ImageView
+        android:id="@+id/iv_key_board_6"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toStartOf="@+id/iv_key_board_7"
+        app:layout_constraintStart_toEndOf="@+id/iv_key_board_5"
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+
+    <ImageView
+        android:id="@+id/iv_key_board_7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_key_board_6"
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/til_password"
-        android:background="@drawable/activity_login_selector_btn_login"
-        android:text="LOG IN"
-        android:textSize="20sp"
-        android:layout_marginBottom="12dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.54" />
 
-    <ImageView
-    android:id="@+id/iv_cloud"
-    android:layout_width="105dp"
-    android:layout_height="60dp"
-    android:background="@drawable/activity_login_cloud"
-    android:layout_marginLeft="-120dp" />
 
-    <ImageView
-        android:id="@+id/iv_cloud2"
-        android:layout_below="@+id/btn_login"
-        android:layout_width="105dp"
-        android:layout_height="60dp"
-        android:background="@drawable/activity_login_cloud"
-        android:layout_marginLeft="-120dp"/>
-</RelativeLayout>
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.33" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.12" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.86" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
+
+
+</android.support.constraint.ConstraintLayout>
