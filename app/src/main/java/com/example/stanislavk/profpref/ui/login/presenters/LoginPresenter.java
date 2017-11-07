@@ -39,12 +39,10 @@ public class LoginPresenter extends BasePresenter<LoginView> {
       RxFirebaseAuth.signInWithEmailAndPassword(mCoreServices.getFireBaseService().getAuth(),"android@gmail.com", "eqwdsfSAsadadsAsd1")
               .subscribe(admin -> {
 
-                  getViewState().onShowInfoMsg("Соединение с бд установлено");
-
                   Query userSearchQuery =  mCoreServices.getFireBaseService().getDatabase()
                           .child(FIREBASE_STUDENTS)
                           .orderByChild("login")
-                          .equalTo(login + LOGIN);
+                          .equalTo(login);
 
                   RxFirebaseDatabase.observeSingleValueEvent(userSearchQuery)
                           .subscribe(student -> {
@@ -67,7 +65,6 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
                                           if (passwrod.equals(uesrPassword)) {
 
-                                              getViewState().onShowInfoMsg("Успешная авторизация");
                                               mCoreServices.getFireBaseService().setModelStudent(modelStudent);
 
                                               Query query = mCoreServices.getFireBaseService().getDatabase()

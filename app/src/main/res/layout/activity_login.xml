@@ -10,18 +10,24 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="0dp">
 
-    <!--<ProgressBar
+    <ProgressBar
         android:id="@+id/progressBar"
-        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp" />-->
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/iv_password_1"
+        android:id="@+id/iv_log_1"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="12dp"
@@ -29,13 +35,13 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/activity_login_cell_drawable"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toStartOf="@+id/iv_password_2"
+        app:layout_constraintEnd_toStartOf="@+id/iv_log_2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
-        android:id="@+id/iv_password_2"
+        android:id="@+id/iv_log_2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="10dp"
@@ -43,15 +49,15 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/activity_login_cell_drawable"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toStartOf="@+id/iv_password_3"
-        app:layout_constraintStart_toEndOf="@+id/iv_password_1"
+        app:layout_constraintEnd_toStartOf="@+id/iv_log_3"
+        app:layout_constraintStart_toEndOf="@+id/iv_log_1"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:layout_constraintVertical_bias="1.0"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="11dp" />
 
     <ImageView
-        android:id="@+id/iv_password_3"
+        android:id="@+id/iv_log_3"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="10dp"
@@ -59,15 +65,15 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/activity_login_cell_drawable"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toStartOf="@+id/iv_password_4"
-        app:layout_constraintStart_toEndOf="@+id/iv_password_2"
+        app:layout_constraintEnd_toStartOf="@+id/iv_log_4"
+        app:layout_constraintStart_toEndOf="@+id/iv_log_2"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:layout_constraintVertical_bias="1.0"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="11dp" />
 
     <ImageView
-        android:id="@+id/iv_password_4"
+        android:id="@+id/iv_log_4"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="10dp"
@@ -75,13 +81,13 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/activity_login_cell_drawable"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toStartOf="@+id/iv_password_5"
-        app:layout_constraintStart_toEndOf="@+id/iv_password_3"
+        app:layout_constraintEnd_toStartOf="@+id/iv_log_5"
+        app:layout_constraintStart_toEndOf="@+id/iv_log_3"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
-        android:id="@+id/iv_password_5"
+        android:id="@+id/iv_log_5"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="10dp"
@@ -89,15 +95,15 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/activity_login_cell_drawable"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toStartOf="@+id/iv_password_6"
-        app:layout_constraintStart_toEndOf="@+id/iv_password_4"
+        app:layout_constraintEnd_toStartOf="@+id/iv_log_6"
+        app:layout_constraintStart_toEndOf="@+id/iv_log_4"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:layout_constraintVertical_bias="1.0"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="11dp" />
 
     <ImageView
-        android:id="@+id/iv_password_6"
+        android:id="@+id/iv_log_6"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="10dp"
@@ -105,15 +111,15 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/activity_login_cell_drawable"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toStartOf="@+id/iv_password_7"
-        app:layout_constraintStart_toEndOf="@+id/iv_password_5"
+        app:layout_constraintEnd_toStartOf="@+id/iv_log_7"
+        app:layout_constraintStart_toEndOf="@+id/iv_log_5"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:layout_constraintVertical_bias="1.0"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="11dp" />
 
     <ImageView
-        android:id="@+id/iv_password_7"
+        android:id="@+id/iv_log_7"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="12dp"
@@ -122,7 +128,7 @@
         android:background="@drawable/activity_login_cell_drawable"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_password_6"
+        app:layout_constraintStart_toEndOf="@+id/iv_log_6"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:layout_constraintVertical_bias="1.0" />
 
