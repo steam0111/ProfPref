@@ -78,6 +78,8 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.2'
     provided 'javax.annotation:jsr250-api:1.0'
     provided 'com.arello-mobile:moxy-compiler:1.4.5'
+
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.10'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -4,11 +4,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -102,7 +104,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
         mKeysLoginImages.add(mIVlog_7);
 
         mIVCell_1.setOnClickListener(v -> {
-            
+
             if (mLogin.length() < 7) {
                 animateKeyToTarget(mIVCell_1, mKeysLoginImages.get(mLogin.length()), 1);
                 mLogin = mLogin.concat("1");
@@ -265,6 +267,39 @@ public class LoginActivity extends BaseActivity implements LoginView {
         onInVisibleProgressBar();
     }
 
+    @Override
+    public void onDropInputField(int type) {
+        if (type == LoginPresenter.DROP_LOGIN) {
+            for (ImageView imageView : mKeysLoginImages) {
+                imageView.setVisibility(View.VISIBLE);
+                imageView.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.activity_login_cell_drawable));
+                setPulseAnimation(imageView);
+            }
+            mLogin = "";
+        } else {
+            for (ImageView imageView : mKeysPasswordImages) {
+                imageView.setVisibility(View.VISIBLE);
+                imageView.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.activity_login_cell_drawable));
+                setPulseAnimation(imageView);
+            }
+            mPassword = "";
+        }
+
+    }
+
+    private void setPulseAnimation(ImageView iv) {
+
+        ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+                iv,
+                PropertyValuesHolder.ofFloat("scaleX", 1.15f),
+                PropertyValuesHolder.ofFloat("scaleY", 1.15f));
+        scaleDown.setDuration(310);
+
+        scaleDown.setRepeatCount(5);
+        scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
+
+        scaleDown.start();
+    }
     private void setKeyBoardImages(ArrayList<ImageView> keyBoardImages, FirebaseStorage storage) {
 
         int numberPhoto = 1;

@@ -33,6 +33,9 @@ import static com.example.stanislavk.profpref.di.services.firebase.FireBaseServi
 @InjectViewState
 public class LoginPresenter extends BasePresenter<LoginView> {
 
+  public static int DROP_LOGIN = 0;
+  public static int DROP_PASSWORD = 1;
+
   public void login(String login, String passwrod){
       getViewState().onVisibleProgressBar();
 
@@ -48,9 +51,6 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                           .subscribe(student -> {
                               if (student.getValue() != null) {
 
-
-
-                              String key2 = student.getKey();
                               ModelStudent modelStudent = new ModelStudent();
                               String key = student.getValue().toString().substring(1,student.getValue().toString().indexOf("=", 10));
                               modelStudent.setKey(key);
@@ -106,12 +106,15 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                                                     }
                                                 });
                                           } else {
-                                              getViewState().onShowInfoMsg("Ошибка логина");
+                                              getViewState().onDropInputField(DROP_PASSWORD);
+                                              getViewState().onInVisibleProgressBar();
                                           }
                                       },throwable -> getViewState().onShowInfoMsg("Ошибка логина"));
                           } else {
-                                  getViewState().onShowInfoMsg("Ошибка логина");
-                              }},throwable -> getViewState().onShowInfoMsg("Ошибка логина"));
+                                  getViewState().onDropInputField(DROP_LOGIN);
+                                  getViewState().onInVisibleProgressBar();
+                              }
+                          },throwable -> getViewState().onShowInfoMsg("Ошибка логина"));
 
               });
   }
@@ -160,7 +163,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
       });
   }
 
-  public void getCurrentStayTest(DatabaseReference database, String key){
+  private void getCurrentStayTest(DatabaseReference database, String key){
 
       Query query = database
               .child(FIREBASE_STUDENTS)

@@ -112,37 +112,39 @@ public class TestPresenter extends BasePresenter<TestView> {
 
     public void setAnswer(int pos, int answer, float averageHappines, float pushHappines){
 
-        TestAnswerModel answerModel = mAnswers.get(pos);
-        answerModel.setAnswer(answer);
-        answerModel.setAverageHappines(averageHappines);
-        answerModel.setPushHappines(pushHappines);
+        if (mAnswers.size() != 0) {
+            TestAnswerModel answerModel = mAnswers.get(pos);
+            answerModel.setAnswer(answer);
+            answerModel.setAverageHappines(averageHappines);
+            answerModel.setPushHappines(pushHappines);
 
-        DatabaseReference query = mCoreServices.getFireBaseService().getDatabase()
-                .child(FIREBASE_STUDENTS)
-                .child(mCoreServices.getFireBaseService().getCurrentUser().getKey())
-                .child(FIREBASE_STUDENT_TEST_STATE);
+            DatabaseReference query = mCoreServices.getFireBaseService().getDatabase()
+                    .child(FIREBASE_STUDENTS)
+                    .child(mCoreServices.getFireBaseService().getCurrentUser().getKey())
+                    .child(FIREBASE_STUDENT_TEST_STATE);
 
-        mModelStateTesting.state = FIREBASE_STUDENT_STATE_ON_TEST;
-        mModelStateTesting.current_question = pos + "";
-        mModelStateTesting.current_result = mCoreServices.getFireBaseService().getModelStateTesting().current_result;
+            mModelStateTesting.state = FIREBASE_STUDENT_STATE_ON_TEST;
+            mModelStateTesting.current_question = pos + "";
+            mModelStateTesting.current_result = mCoreServices.getFireBaseService().getModelStateTesting().current_result;
 
-        RxFirebaseDatabase.setValue(query, mModelStateTesting)
-                .subscribe(()->{
+            RxFirebaseDatabase.setValue(query, mModelStateTesting)
+                    .subscribe(() -> {
 
-                    DatabaseReference result = mCoreServices.getFireBaseService().getDatabase()
-                            .child(FIREBASE_STUDENTS)
-                            .child(mCoreServices.getFireBaseService().getCurrentUser().getKey())
-                            .child(FIREBASE_TESTS)
-                            .child(mCoreServices.getFireBaseService().getCurrentUserTest())
-                            .child(FIREBASE_STUDENT_TESTS_RESULTS)
-                            .child(mCoreServices.getFireBaseService().getModelStateTesting().current_result);
+                        DatabaseReference result = mCoreServices.getFireBaseService().getDatabase()
+                                .child(FIREBASE_STUDENTS)
+                                .child(mCoreServices.getFireBaseService().getCurrentUser().getKey())
+                                .child(FIREBASE_TESTS)
+                                .child(mCoreServices.getFireBaseService().getCurrentUserTest())
+                                .child(FIREBASE_STUDENT_TESTS_RESULTS)
+                                .child(mCoreServices.getFireBaseService().getModelStateTesting().current_result);
 
-                    RxFirebaseDatabase.setValue(result.child(pos + ""), answerModel)
-                            .subscribe(()->{
-                                if (pos == (mAnswers.size() - 1)) {
-                                    getViewState().onNextScreen();
-                                }
-                            });
-                });
+                        RxFirebaseDatabase.setValue(result.child(pos + ""), answerModel)
+                                .subscribe(() -> {
+                                    if (pos == (mAnswers.size() - 1)) {
+                                        getViewState().onNextScreen();
+                                    }
+                                });
+                    });
+        }
     }
 }
