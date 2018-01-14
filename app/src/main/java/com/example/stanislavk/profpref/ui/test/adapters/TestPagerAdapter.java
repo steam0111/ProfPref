@@ -4,7 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelQuestion;
 import com.example.stanislavk.profpref.ui.test.fragments.TestQuestionFragment;
+import com.example.stanislavk.profpref.ui.test.models.TestAnswerModel;
 
 import java.util.ArrayList;
 
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 
 public class TestPagerAdapter extends FragmentPagerAdapter {
 
-    private ArrayList<String> mListLinks = new ArrayList<>();
+    private ArrayList<TestAnswerModel> mQuestionList = new ArrayList<>();
 
 
     public TestPagerAdapter(FragmentManager fm) {
@@ -23,16 +25,18 @@ public class TestPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return TestQuestionFragment.newInstance(position,mListLinks.get(position));
+        return TestQuestionFragment.newInstance(position,
+                                                mQuestionList.get(position).getFirebasePictureLink(),
+                                                mQuestionList.get(position).getContentType());
     }
 
     @Override
     public int getCount() {
-        return mListLinks.size();
+        return mQuestionList.size();
     }
 
-    public void setLinksList(ArrayList<String> listLinks) {
-        this.mListLinks = listLinks;
+    public void setQuestionsList(ArrayList<TestAnswerModel> listLinks) {
+        this.mQuestionList = listLinks;
         notifyDataSetChanged();
     }
 }

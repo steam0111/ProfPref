@@ -8,6 +8,7 @@ public class TestQuestionModel {
 
     private String mFirebasePictureLink;
     private String mTitle;
+    private String mContentType;
 
     public String getFirebasePictureLink() {
         return mFirebasePictureLink;
@@ -23,5 +24,13 @@ public class TestQuestionModel {
 
     public void setTitle(String mTitle) {
         this.mTitle = mTitle;
+    }
+
+    public String getContentType() {
+        return mContentType;
+    }
+
+    public void setContentType(String mContentType) {
+        this.mContentType = mContentType;
     }
 }

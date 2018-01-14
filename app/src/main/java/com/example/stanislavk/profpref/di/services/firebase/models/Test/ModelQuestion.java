@@ -7,6 +7,7 @@ package com.example.stanislavk.profpref.di.services.firebase.models.Test;
 public class ModelQuestion {
 
     private String title;
+    private String type;
 
     public ModelQuestion(){
 
@@ -18,5 +19,13 @@ public class ModelQuestion {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getContentType() {
+        return type;
+    }
+
+    public void setContentType(String contentType) {
+        this.type = contentType;
     }
 }

@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.stanislavk.profpref.ui.results.fragments.ResultFragment;
-import com.example.stanislavk.profpref.ui.test.fragments.TestQuestionFragment;
+import com.example.stanislavk.profpref.ui.results.models.ResultShowingModel;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class ResultPagerAdapter extends FragmentPagerAdapter {
 
-    private ArrayList<ArrayList<String>> mCategoryLinks = new ArrayList<>();
+    private ArrayList<ArrayList<ResultShowingModel>> mCategoryContentList = new ArrayList<>();
 
 
     public ResultPagerAdapter(FragmentManager fm) {
@@ -24,16 +24,16 @@ public class ResultPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return ResultFragment.newInstance(position,mCategoryLinks.get(position));
+        return ResultFragment.newInstance(position, mCategoryContentList.get(position));
     }
 
     @Override
     public int getCount() {
-        return mCategoryLinks.size();
+        return mCategoryContentList.size();
     }
 
-    public void setLinksList(ArrayList<ArrayList<String>> listLinks) {
-        this.mCategoryLinks = listLinks;
+    public void setCategoryContentList(ArrayList<ArrayList<ResultShowingModel>> listLinks) {
+        this.mCategoryContentList = listLinks;
         notifyDataSetChanged();
     }
 }

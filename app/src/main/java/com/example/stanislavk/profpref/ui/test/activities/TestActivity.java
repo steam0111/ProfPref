@@ -12,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -55,7 +54,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENTS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_TESTS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.setImageFromFB;
 
@@ -114,11 +112,12 @@ public class TestActivity extends BaseActivity implements TestView {
 
         mPresenter.getAllsettingsTest();
         mVPtest.setScrollDurationFactor(12);
+
         mPagerAdapter = new TestPagerAdapter(getSupportFragmentManager());
         mVPtest.setAdapter(mPagerAdapter);
         mVPtest.setPageTransformer(true, new ForegroundToBackgroundTransformer());
 
-        mVPtest.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mVPtest.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
             public void onPageSelected(int position) {
@@ -172,6 +171,7 @@ public class TestActivity extends BaseActivity implements TestView {
 
         mCurrentAnimation=0;
     }
+
     @OnClick(R.id.btn_dislike)
     public void dislike() {
         mPresenter.setAnswer(mVPtest.getCurrentItem(), -1, mAverageHappines, mCurrentHappines);
@@ -245,7 +245,6 @@ public class TestActivity extends BaseActivity implements TestView {
         }
 
 
-        ArrayList <String> links = new ArrayList<>();
         ArrayList <TestAnswerModel> answers = new ArrayList<>();
 
         int catCounter = 0;
@@ -262,8 +261,8 @@ public class TestActivity extends BaseActivity implements TestView {
                 answerModel.setCategory(categories.getNameCategory());
                 answerModel.setFirebasePictureLink(link);
                 answerModel.setTitle(question.getTitle());
+                answerModel.setContentType(question.getContentType());
 
-                links.add(link);
                 answers.add(answerModel);
 
                 quesCounter++;
@@ -271,7 +270,7 @@ public class TestActivity extends BaseActivity implements TestView {
             catCounter++;
         }
 
-        mPagerAdapter.setLinksList(links);
+        mPagerAdapter.setQuestionsList(answers);
         mPresenter.setAnswers(answers);
 
         if (currentQuestion > 0) {
@@ -280,7 +279,6 @@ public class TestActivity extends BaseActivity implements TestView {
 
         mVPtest.setCurrentItem(currentQuestion);
         mTVtitle.setText(mPresenter.getAnswers().get(currentQuestion).getTitle());
-
     }
 
     @Override

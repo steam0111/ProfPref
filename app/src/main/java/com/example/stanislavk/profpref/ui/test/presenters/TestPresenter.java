@@ -6,6 +6,7 @@ import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelCat
 import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelQuestion;
 import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelStateTesting;
 import com.example.stanislavk.profpref.ui.base.presenters.BasePresenter;
+import com.example.stanislavk.profpref.ui.test.enums.QuestionContentType;
 import com.example.stanislavk.profpref.ui.test.models.TestAnswerModel;
 import com.example.stanislavk.profpref.ui.test.views.TestView;
 import com.google.firebase.database.DataSnapshot;
@@ -61,12 +62,19 @@ public class TestPresenter extends BasePresenter<TestView> {
                                     ModelCategories cat = new ModelCategories();
                                     cat.setNameCategory(category.child("name").getValue().toString());
 
-
                                     ArrayList<ModelQuestion> questions= new ArrayList<>();
 
                                     for (DataSnapshot question: category.child("questions").getChildren()){
                                         ModelQuestion quest = new ModelQuestion();
                                         quest.setTitle(question.child("title").getValue().toString());
+
+                                        if (question.child("type").getValue() != null &&
+                                            !question.child("type").getValue().toString().equals("") &&
+                                            question.child("type").getValue().toString().equals(QuestionContentType.GIF.getType())) {
+                                            quest.setContentType(QuestionContentType.GIF.getType());
+                                        } else {
+                                            quest.setContentType(QuestionContentType.JPG.getType());
+                                        }
                                         questions.add(quest);
                                     }
 

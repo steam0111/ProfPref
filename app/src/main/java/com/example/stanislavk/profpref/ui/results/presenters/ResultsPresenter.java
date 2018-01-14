@@ -9,7 +9,9 @@ import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelSta
 import com.example.stanislavk.profpref.ui.base.presenters.BasePresenter;
 import com.example.stanislavk.profpref.ui.pretest.views.PreTestView;
 import com.example.stanislavk.profpref.ui.results.models.ResultAnswerModel;
+import com.example.stanislavk.profpref.ui.results.models.ResultShowingModel;
 import com.example.stanislavk.profpref.ui.results.views.ResultsView;
+import com.example.stanislavk.profpref.ui.test.enums.QuestionContentType;
 import com.example.stanislavk.profpref.ui.test.models.TestAnswerModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +38,7 @@ import static com.example.stanislavk.profpref.di.services.firebase.FireBaseServi
 @InjectViewState
 public class ResultsPresenter extends BasePresenter<ResultsView> {
 
-    private ArrayList<ArrayList<String>> mCategoryLinks = new ArrayList<>();
+    private ArrayList<ArrayList<ResultShowingModel>> mCategoryLinks = new ArrayList<>();
     private ArrayList<String> mListCategoryLinks = new ArrayList<>();
 
     public void onLoadLinksCategory() {
@@ -58,17 +60,28 @@ public class ResultsPresenter extends BasePresenter<ResultsView> {
 
                         int quesCounter = 0;
 
-                        ArrayList<String> linkCategory = new ArrayList<String>();
+                        ArrayList<ResultShowingModel> linkCategory = new ArrayList<>();
 
                         for (DataSnapshot question : category.child("questions").getChildren()) {
-                            TestAnswerModel answerModel = new TestAnswerModel();
 
                             String link = FIREBASE_TESTS + "/"
                                     + mCoreServices.getFireBaseService().getCurrentUserTest()+ "/"
                                     + catCounter+ "/"
                                     + quesCounter;
 
-                            linkCategory.add(link);
+
+                            String contentType = "";
+                            if (question.child("type").getValue() != null &&
+                                    !question.child("type").getValue().toString().equals("") &&
+                                    question.child("type").getValue().toString().equals(QuestionContentType.GIF.getType())) {
+                                contentType = QuestionContentType.GIF.getType();
+                            } else {
+                                contentType = QuestionContentType.JPG.getType();
+                            }
+
+                            ResultShowingModel resultShowingModel = new ResultShowingModel(link, contentType);
+
+                            linkCategory.add(resultShowingModel);
                             quesCounter++;
                         }
                         mCategoryLinks.add(linkCategory);
@@ -150,25 +163,27 @@ public class ResultsPresenter extends BasePresenter<ResultsView> {
 
     public void setAnswer(int pos, int answer){
 
-        ResultAnswerModel answerModel = new ResultAnswerModel();
-        answerModel.setTitleCategory(mListCategoryLinks.get(pos));
-        answerModel.setStateAccept(answer);
+        if (mListCategoryLinks.size() != 0) {
+            ResultAnswerModel answerModel = new ResultAnswerModel();
+            answerModel.setTitleCategory(mListCategoryLinks.get(pos));
+            answerModel.setStateAccept(answer);
 
-        DatabaseReference result = mCoreServices.getFireBaseService().getDatabase()
-                .child(FIREBASE_STUDENTS)
-                .child(mCoreServices.getFireBaseService().getCurrentUser().getKey())
-                .child(FIREBASE_TESTS)
-                .child(mCoreServices.getFireBaseService().getCurrentUserTest())
-                .child(FIREBASE_STUDENT_TESTS_RESULTS)
-                .child(mCoreServices.getFireBaseService().getModelStateTesting().current_result)
-                .child(FIREBASE_STUDENT_TESTS_RESULTS_CATEGORY)
-                .child(pos + "");
+            DatabaseReference result = mCoreServices.getFireBaseService().getDatabase()
+                    .child(FIREBASE_STUDENTS)
+                    .child(mCoreServices.getFireBaseService().getCurrentUser().getKey())
+                    .child(FIREBASE_TESTS)
+                    .child(mCoreServices.getFireBaseService().getCurrentUserTest())
+                    .child(FIREBASE_STUDENT_TESTS_RESULTS)
+                    .child(mCoreServices.getFireBaseService().getModelStateTesting().current_result)
+                    .child(FIREBASE_STUDENT_TESTS_RESULTS_CATEGORY)
+                    .child(pos + "");
 
-        RxFirebaseDatabase.setValue(result, answerModel)
-                .subscribe(()->{
-                    if (pos == (mCategoryLinks.size() - 1)) {
-                        getViewState().onNextScreen();
-                    }
-                });
+            RxFirebaseDatabase.setValue(result, answerModel)
+                    .subscribe(() -> {
+                        if (pos == (mCategoryLinks.size() - 1)) {
+                            getViewState().onNextScreen();
+                        }
+                    });
+        }
     }
 }

@@ -1,56 +1,33 @@
 package com.example.stanislavk.profpref.ui.results.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.bumptech.glide.Glide;
 import com.eftimoff.viewpagertransformers.ForegroundToBackgroundTransformer;
 import com.example.stanislavk.profpref.R;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelManageButtons;
-import com.example.stanislavk.profpref.di.services.firebase.models.ModelPreTest;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelSettings;
-import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelCategories;
-import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelQuestion;
 import com.example.stanislavk.profpref.ui.afterresult.activties.AfterResultActivity;
 import com.example.stanislavk.profpref.ui.base.activities.BaseActivity;
-import com.example.stanislavk.profpref.ui.pretest.presenters.PreTestPresenter;
-import com.example.stanislavk.profpref.ui.pretest.views.PreTestView;
 import com.example.stanislavk.profpref.ui.results.adapters.ResultPagerAdapter;
+import com.example.stanislavk.profpref.ui.results.models.ResultShowingModel;
 import com.example.stanislavk.profpref.ui.results.presenters.ResultsPresenter;
 import com.example.stanislavk.profpref.ui.results.views.ResultsView;
-import com.example.stanislavk.profpref.ui.test.activities.TestActivity;
-import com.example.stanislavk.profpref.ui.test.adapters.TestPagerAdapter;
 import com.example.stanislavk.profpref.ui.test.custom.ViewPagerCustomDuration;
-import com.example.stanislavk.profpref.ui.test.models.TestAnswerModel;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
-import com.github.amlcurran.showcaseview.targets.Target;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_TESTS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.setImageFromFB;
 
 public class ResultsActivity extends BaseActivity implements ResultsView {
@@ -92,8 +69,8 @@ public class ResultsActivity extends BaseActivity implements ResultsView {
     }
 
     @Override
-    public void onLoadLinksCategory(ArrayList<ArrayList<String>> categoryLinks) {
-        mPagerAdapter.setLinksList(categoryLinks);
+    public void onLoadLinksCategory(ArrayList<ArrayList<ResultShowingModel>> categoryLinks) {
+        mPagerAdapter.setCategoryContentList(categoryLinks);
     }
 
     @Override
