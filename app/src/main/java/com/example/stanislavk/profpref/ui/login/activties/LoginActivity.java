@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.view.ViewPropertyAnimator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -116,7 +117,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("1");
             }
 
-            if (mLogin.length() == 7) {
+            if (mLogin.length() == 7 && mPassword.length() == 0) {
                 mPresenter.checkLogin(mLogin);
             }
 
@@ -134,7 +135,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("2");
             }
 
-            if (mLogin.length() == 7) {
+            if (mLogin.length() == 7 && mPassword.length() == 0) {
                 mPresenter.checkLogin(mLogin);
             }
 
@@ -152,7 +153,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("3");
             }
 
-            if (mLogin.length() == 7) {
+            if (mLogin.length() == 7 && mPassword.length() == 0) {
                 mPresenter.checkLogin(mLogin);
             }
 
@@ -170,7 +171,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("4");
             }
 
-            if (mLogin.length() == 7) {
+            if (mLogin.length() == 7 && mPassword.length() == 0) {
                 mPresenter.checkLogin(mLogin);
             }
 
@@ -188,7 +189,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("5");
             }
 
-            if (mLogin.length() == 7) {
+            if (mLogin.length() == 7 && mPassword.length() == 0) {
                 mPresenter.checkLogin(mLogin);
             }
 
@@ -207,7 +208,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("6");
             }
 
-            if (mLogin.length() == 7) {
+            if (mLogin.length() == 7 && mPassword.length() == 0) {
                 mPresenter.checkLogin(mLogin);
             }
 
@@ -225,7 +226,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("7");
             }
 
-            if (mLogin.length() == 7) {
+            if (mLogin.length() == 7 && mPassword.length() == 0) {
                 mPresenter.checkLogin(mLogin);
             }
 
@@ -303,14 +304,17 @@ public class LoginActivity extends BaseActivity implements LoginView {
     public void onDropInputField(int type) {
         if (type == LoginPresenter.DROP_LOGIN) {
             for (ImageView imageView : mKeysLoginImages) {
-                imageView.setVisibility(View.VISIBLE);
                 imageView.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.activity_login_cell_drawable));
                 setPulseAnimation(imageView);
             }
             mLogin = "";
         } else {
+
+            for (ImageView object : mKeysLoginImages) {
+                object.setVisibility(View.GONE);
+            }
+
             for (ImageView imageView : mKeysPasswordImages) {
-                imageView.setVisibility(View.VISIBLE);
                 imageView.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.activity_login_cell_drawable));
                 setPulseAnimation(imageView);
             }
@@ -329,8 +333,62 @@ public class LoginActivity extends BaseActivity implements LoginView {
             object.setVisibility(View.VISIBLE);
         }
 
-        mTVinfo.setText(R.string.activity_login_info_text_input_password);
-        mIVinfo.setImageResource(R.drawable.activity_login_ic_password);
+        float startX = mIVinfo.getX();
+        float startY = mIVinfo.getY();
+
+        int littleShift = 150;
+
+        int durationAnimLeft = 1000;
+        int durationAnimBottom = 600;
+
+        AnimatorSet animChangeInfoLoginToPassword = new AnimatorSet();
+
+        AnimatorSet transXwithFade = new AnimatorSet();
+
+        ObjectAnimator transX = ObjectAnimator.ofFloat(mIVinfo, "translationX", -mIVinfo.getWidth() - littleShift);
+        ObjectAnimator fadeDown = ObjectAnimator.ofFloat(mIVinfo, "alpha", 0);
+        ObjectAnimator scaleX0 = ObjectAnimator.ofFloat(mTVinfo, "scaleX", 0);
+        ObjectAnimator scaleY0 = ObjectAnimator.ofFloat(mTVinfo, "scaleY", 0);
+
+        transXwithFade.playTogether(transX, fadeDown, scaleX0, scaleY0);
+        transXwithFade.setDuration(durationAnimLeft);
+
+        transXwithFade.addListener(new  AnimatorListenerAdapter() {
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mTVinfo.setText(R.string.activity_login_info_text_input_password);
+                mIVinfo.setImageResource(R.drawable.activity_login_ic_password);
+            }
+
+        });
+
+        ObjectAnimator toFirstX = ObjectAnimator.ofFloat(mIVinfo, "x", startX);
+        toFirstX.setDuration(0);
+
+        ObjectAnimator toTop = ObjectAnimator.ofFloat(mIVinfo, "translationY", -mIVinfo.getWidth() - littleShift);
+        toTop.setDuration(0);
+
+        AnimatorSet transYwithFade = new AnimatorSet();
+
+        ObjectAnimator fadeUp = ObjectAnimator.ofFloat(mIVinfo, "alpha", 1);
+        fadeUp.setDuration(500);
+
+        ObjectAnimator toFirstY = ObjectAnimator.ofFloat(mIVinfo, "y", startY);
+        toFirstY.setDuration(durationAnimBottom);
+
+        ObjectAnimator scaleX1 = ObjectAnimator.ofFloat(mTVinfo, "scaleX", 1);
+        scaleX1.setDuration(durationAnimBottom);
+
+        ObjectAnimator scaleY1 = ObjectAnimator.ofFloat(mTVinfo, "scaleY", 1);
+        scaleY1.setDuration(durationAnimBottom);
+
+        transYwithFade.playTogether(fadeUp, toFirstY, scaleX1, scaleY1);
+
+        animChangeInfoLoginToPassword.playSequentially(transXwithFade, toFirstX, toTop, transYwithFade);
+
+        animChangeInfoLoginToPassword.start();
+
     }
 
     private void setPulseAnimation(ImageView iv) {
