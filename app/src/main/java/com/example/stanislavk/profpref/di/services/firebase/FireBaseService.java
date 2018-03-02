@@ -64,7 +64,7 @@ public class FireBaseService {
                 .load(storageReference)
                 .into(imageView);
     }
-    
+
     public FirebaseAuth getAuth() {
         return mAuth;
     }

@@ -5,15 +5,14 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -60,6 +59,10 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @BindView(R.id.iv_pass_5) ImageView mIVpass_5;
     @BindView(R.id.iv_pass_6) ImageView mIVpass_6;
     @BindView(R.id.iv_pass_7) ImageView mIVpass_7;
+
+    @BindView(R.id.tv_info) TextView mTVinfo;
+    @BindView(R.id.iv_info) ImageView mIVinfo;
+
 
     private ArrayList<ImageView> mKeysBoardImages = new ArrayList<>();
     private ArrayList<ImageView> mKeysPasswordImages = new ArrayList<>();
@@ -113,8 +116,12 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("1");
             }
 
-            if (mLogin.length() == 7 && mPassword.length() == 7) {
-                mPresenter.login(mLogin, mPassword);
+            if (mLogin.length() == 7) {
+                mPresenter.checkLogin(mLogin);
+            }
+
+            if (mPassword.length() == 7) {
+                mPresenter.checkPasswrod(mPassword);
             }
         });
 
@@ -127,8 +134,12 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("2");
             }
 
-            if (mLogin.length() == 7 && mPassword.length() == 7) {
-                mPresenter.login(mLogin, mPassword);
+            if (mLogin.length() == 7) {
+                mPresenter.checkLogin(mLogin);
+            }
+
+            if (mPassword.length() == 7) {
+                mPresenter.checkPasswrod(mPassword);
             }
         });
 
@@ -141,8 +152,12 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("3");
             }
 
-            if (mLogin.length() == 7 && mPassword.length() == 7) {
-                mPresenter.login(mLogin, mPassword);
+            if (mLogin.length() == 7) {
+                mPresenter.checkLogin(mLogin);
+            }
+
+            if (mPassword.length() == 7) {
+                mPresenter.checkPasswrod(mPassword);
             }
         });
 
@@ -155,8 +170,12 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("4");
             }
 
-            if (mLogin.length() == 7 && mPassword.length() == 7) {
-                mPresenter.login(mLogin, mPassword);
+            if (mLogin.length() == 7) {
+                mPresenter.checkLogin(mLogin);
+            }
+
+            if (mPassword.length() == 7) {
+                mPresenter.checkPasswrod(mPassword);
             }
         });
 
@@ -169,9 +188,14 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("5");
             }
 
-            if (mLogin.length() == 7 && mPassword.length() == 7) {
-                mPresenter.login(mLogin, mPassword);
+            if (mLogin.length() == 7) {
+                mPresenter.checkLogin(mLogin);
             }
+
+            if (mPassword.length() == 7) {
+                mPresenter.checkPasswrod(mPassword);
+            }
+
         });
 
         mIVCell_6.setOnClickListener(v -> {
@@ -183,8 +207,12 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("6");
             }
 
-            if (mLogin.length() == 7 && mPassword.length() == 7) {
-                mPresenter.login(mLogin, mPassword);
+            if (mLogin.length() == 7) {
+                mPresenter.checkLogin(mLogin);
+            }
+
+            if (mPassword.length() == 7) {
+                mPresenter.checkPasswrod(mPassword);
             }
         });
 
@@ -197,8 +225,12 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("7");
             }
 
-            if (mLogin.length() == 7 && mPassword.length() == 7) {
-                mPresenter.login(mLogin, mPassword);
+            if (mLogin.length() == 7) {
+                mPresenter.checkLogin(mLogin);
+            }
+
+            if (mPassword.length() == 7) {
+                mPresenter.checkPasswrod(mPassword);
             }
         });
 
@@ -285,6 +317,20 @@ public class LoginActivity extends BaseActivity implements LoginView {
             mPassword = "";
         }
 
+    }
+
+    @Override
+    public void onSetupPasswordMode() {
+       for (ImageView object : mKeysLoginImages) {
+           object.setVisibility(View.GONE);
+       }
+
+        for (ImageView object : mKeysPasswordImages) {
+            object.setVisibility(View.VISIBLE);
+        }
+
+        mTVinfo.setText(R.string.activity_login_info_text_input_password);
+        mIVinfo.setImageResource(R.drawable.activity_login_ic_password);
     }
 
     private void setPulseAnimation(ImageView iv) {

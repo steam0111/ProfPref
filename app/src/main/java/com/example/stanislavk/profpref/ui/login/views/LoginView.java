@@ -16,4 +16,5 @@ public interface LoginView extends BaseView {
     void onResultScreen();
     void onShowInfoMsg(String msg);
     void onDropInputField(int type);
+    void onSetupPasswordMode();
 }

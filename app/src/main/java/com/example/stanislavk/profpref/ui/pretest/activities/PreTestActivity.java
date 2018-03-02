@@ -92,9 +92,6 @@ public class PreTestActivity extends BaseActivity implements PreTestView {
             mBTNrightArrow.setVisibility(View.INVISIBLE);
         }
 
-
-        //set up pretest
-
         ViewTarget targetBtnLike = new ViewTarget(mBTNlike);
         ViewTarget targetBtndisLike = new ViewTarget(mBTNdislike);
         ViewTarget targetBTNStop = new ViewTarget(mBTNstopTest);

@@ -57,6 +57,7 @@ public class AfterResultActivity extends BaseActivity implements AfterResultView
         builder.setPositiveButton(R.string.activity_test_dialog_continue, (dialog, id) -> {
 
         });
+
         builder.setNegativeButton(R.string.activity_test_dialog_exit, (dialog, id) -> {
             finish();
         });

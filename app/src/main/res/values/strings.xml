@@ -6,4 +6,6 @@
 
     <string name="activity_test_dialog_exit">exit</string>
     <string name="activity_test_dialog_continue">continue</string>
+    <string name="activity_login_info_text_input_login">Input your login please</string>
+    <string name="activity_login_info_text_input_password">Input your password please</string>
 </resources>

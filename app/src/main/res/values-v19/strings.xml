@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_login_info_text_input_login">Input your login please</string>
+    <string name="activity_login_info_text_input_password">Input your password please</string>
+</resources>

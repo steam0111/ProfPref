@@ -3,6 +3,7 @@ package com.example.stanislavk.profpref.ui.results.activities;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -20,6 +21,7 @@ import com.example.stanislavk.profpref.ui.results.models.ResultShowingModel;
 import com.example.stanislavk.profpref.ui.results.presenters.ResultsPresenter;
 import com.example.stanislavk.profpref.ui.results.views.ResultsView;
 import com.example.stanislavk.profpref.ui.test.custom.ViewPagerCustomDuration;
+import com.example.stanislavk.profpref.ui.test.fragments.DialogExit;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ import butterknife.OnClick;
 
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.setImageFromFB;
 
-public class ResultsActivity extends BaseActivity implements ResultsView {
+public class ResultsActivity extends BaseActivity implements ResultsView, DialogExit.onDialogAction{
 
     @InjectPresenter ResultsPresenter mPresenter;
 
@@ -45,6 +47,8 @@ public class ResultsActivity extends BaseActivity implements ResultsView {
 
     private Animation mFadeInAnimation, mFadeOutAnimation;
     private int mCurrentAnimation = 0;
+
+    private DialogExit mDialogExit;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -141,17 +145,9 @@ public class ResultsActivity extends BaseActivity implements ResultsView {
     }
     @OnClick(R.id.btn_stop)
     public void stop() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ResultsActivity.this);
-
-        builder.setPositiveButton(R.string.activity_test_dialog_continue, (dialog, id) -> {
-
-        });
-        builder.setNegativeButton(R.string.activity_test_dialog_exit, (dialog, id) -> {
-            finish();
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        FragmentManager fm = getSupportFragmentManager();
+        mDialogExit = new DialogExit();
+        mDialogExit.show(fm, "fragment_dialog_exit");
     }
 
 
@@ -194,4 +190,13 @@ public class ResultsActivity extends BaseActivity implements ResultsView {
             // TODO Auto-generated method stub
         }
     };
+
+    @Override
+    public void onAction(int command) {
+        if (DialogExit.DIALOG_COMMAD_CONTINUE == command) {
+            mDialogExit.dismiss();
+        } else {
+            finish();
+        }
+    }
 }

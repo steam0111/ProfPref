@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,7 @@ import com.example.stanislavk.profpref.ui.base.activities.BaseActivity;
 import com.example.stanislavk.profpref.ui.results.activities.ResultsActivity;
 import com.example.stanislavk.profpref.ui.test.adapters.TestPagerAdapter;
 import com.example.stanislavk.profpref.ui.test.custom.ViewPagerCustomDuration;
+import com.example.stanislavk.profpref.ui.test.fragments.DialogExit;
 import com.example.stanislavk.profpref.ui.test.models.TestAnswerModel;
 import com.example.stanislavk.profpref.ui.test.presenters.TestPresenter;
 import com.example.stanislavk.profpref.ui.test.views.TestView;
@@ -61,16 +63,14 @@ import static com.example.stanislavk.profpref.di.services.firebase.FireBaseServi
  * Created by LasVegas on 09.07.2017.
  */
 
-public class TestActivity extends BaseActivity implements TestView {
+public class TestActivity extends BaseActivity
+        implements TestView, DialogExit.onDialogAction {
 
     private TextToSpeech mTTSobject;
 
     private static final String TAG = "FaceTracker";
     private static final int RC_HANDLE_GMS = 9001;
-    // permission request codes need to be < 256
     private static final int RC_HANDLE_CAMERA_PERM = 2;
-
-
 
     @InjectPresenter TestPresenter mPresenter;
     @BindView(R.id.vp_test) ViewPagerCustomDuration mVPtest;
@@ -94,9 +94,10 @@ public class TestActivity extends BaseActivity implements TestView {
     //Создание камеры
     private CameraSource mCameraSource = null;
 
-
     //Control camera
     private CameraSourcePreview mPreview;
+
+    private DialogExit mDialogExit;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -192,25 +193,19 @@ public class TestActivity extends BaseActivity implements TestView {
 
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() - 1);
     }
+
     @OnClick(R.id.btn_right_arrow)
     public void arrowRight() {
         mPresenter.setAnswer(mVPtest.getCurrentItem(), 0, mAverageHappines, mCurrentHappines);
 
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
     }
+
     @OnClick(R.id.btn_stop)
     public void stop() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(TestActivity.this);
-
-        builder.setPositiveButton(R.string.activity_test_dialog_continue, (dialog, id) -> {
-
-        });
-        builder.setNegativeButton(R.string.activity_test_dialog_exit, (dialog, id) -> {
-            finish();
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        FragmentManager fm = getSupportFragmentManager();
+        mDialogExit = new DialogExit();
+        mDialogExit.show(fm, "fragment_dialog_exit");
     }
 
 
@@ -305,14 +300,10 @@ public class TestActivity extends BaseActivity implements TestView {
         }
 
         @Override
-        public void onAnimationRepeat(Animation animation) {
-            // TODO Auto-generated method stub
-        }
+        public void onAnimationRepeat(Animation animation) {}
 
         @Override
-        public void onAnimationStart(Animation animation) {
-            // TODO Auto-generated method stub
-        }
+        public void onAnimationStart(Animation animation) {}
     };
 
     Animation.AnimationListener animationFadeInListener = new Animation.AnimationListener() {
@@ -509,6 +500,15 @@ public class TestActivity extends BaseActivity implements TestView {
                 mCameraSource.release();
                 mCameraSource = null;
             }
+        }
+    }
+
+    @Override
+    public void onAction(int command) {
+        if (DialogExit.DIALOG_COMMAD_CONTINUE == command) {
+            mDialogExit.dismiss();
+        } else {
+            finish();
         }
     }
 

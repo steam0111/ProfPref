@@ -118,6 +118,7 @@ public class TestQuestionFragment extends Fragment {
                 e.printStackTrace();
             }
         } else {
+            progressBar.setVisibility(View.GONE);
             setImageFromFB(getContext(), mIVpicture, storageRef.getReference(link + ".jpg"));
         }
 
