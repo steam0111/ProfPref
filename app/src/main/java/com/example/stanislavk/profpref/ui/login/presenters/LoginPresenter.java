@@ -1,11 +1,14 @@
 package com.example.stanislavk.profpref.ui.login.presenters;
 
+import android.content.Context;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelStudent;
 import com.example.stanislavk.profpref.ui.base.presenters.BasePresenter;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelSettings;
 import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelStateTesting;
 import com.example.stanislavk.profpref.ui.login.views.LoginView;
+import com.example.stanislavk.profpref.utils.SharedPreferenceUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,7 +28,6 @@ import static com.example.stanislavk.profpref.di.services.firebase.FireBaseServi
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_SETTINGS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_STUDENT_TEST_STATE;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_TESTS;
-import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.LOGIN;
 
 /**
  * Created by LasVegas on 27.06.2017.
@@ -35,9 +37,26 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
   public static int DROP_LOGIN = 0;
   public static int DROP_PASSWORD = 1;
+
   private ModelStudent mModelStudent = new ModelStudent();
+  private SharedPreferenceUtils mSharedPreferenceUtils;
+
+  public void checkAuthFromSharedPref(Context context) {
+      mSharedPreferenceUtils = SharedPreferenceUtils.getInstance(context);
+
+      String studentKey = mSharedPreferenceUtils.getStringValue("studentKey", "");
+
+      if (!studentKey.equals("")) {
+          String studentPass = mSharedPreferenceUtils.getStringValue("password", "");
+          mModelStudent.setKey(studentKey);
+          checkPassword(studentPass);
+
+      }
+  }
 
   public void checkLogin(String login) {
+
+
       RxFirebaseAuth.signInWithEmailAndPassword(mCoreServices.getFireBaseService().getAuth(),"android@gmail.com", "eqwdsfSAsadadsAsd1")
               .subscribe(admin -> {
 
@@ -52,6 +71,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                                   String key = student.getValue().toString().substring(1,student.getValue().toString().indexOf("=", 10));
                                   mModelStudent.setKey(key);
 
+                                  mSharedPreferenceUtils.setValue("studentKey", key);
+
                                   getViewState().onSetupPasswordMode();
 
                               } else {
@@ -62,7 +83,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
               });
   }
 
-  public void checkPasswrod(String passwrod) {
+  public void checkPassword(String passwrod) {
       Query password =  mCoreServices.getFireBaseService().getDatabase()
               .child(FIREBASE_STUDENTS)
               .child(mModelStudent.getKey())
@@ -72,6 +93,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
               .subscribe(uesrPassword -> {
 
                   if (passwrod.equals(uesrPassword)) {
+
+                      mSharedPreferenceUtils.setValue("password", uesrPassword);
 
                       mCoreServices.getFireBaseService().setModelStudent(mModelStudent);
 
@@ -95,9 +118,11 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                                                       mCoreServices.getFireBaseService().getCurrentUser().getKey());
                                           });
                               } else {
+
                                   HashMap counter_value =  (HashMap) dataSnapshot.getValue();
                                   counter = (long)counter_value.get(FIREBASE_STUDENT_COUNTER_LOGIN);
                                   counter++;
+
                                   RxFirebaseDatabase.setValue(mCoreServices.getFireBaseService().getDatabase().child(FIREBASE_STUDENTS)
                                           .child(mModelStudent.getKey())
                                           .child(FIREBASE_STUDENT_COUNTER_LOGIN), counter).subscribe(
@@ -177,14 +202,20 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                   mCoreServices.getFireBaseService().setModelStateTesting(modelStateTesting);
 
                   if (modelStateTesting.state.equals(FIREBASE_STUDENT_STATE_ON_TEST)) {
+
                       getViewState().onTestScreen();
                       getViewState().onInVisibleProgressBar();
+
                   } else if (modelStateTesting.state.equals(FIREBASE_STUDENT_STATE_ON_RESULT)) {
+
                       getViewState().onResultScreen();
                       getViewState().onInVisibleProgressBar();
+
                   } else {
+
                       getViewState().onNextScreen();
                       getViewState().onInVisibleProgressBar();
+
                   }
               });
 

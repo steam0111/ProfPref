@@ -1,11 +1,14 @@
 package com.example.stanislavk.profpref.ui.afterresult.presenters;
 
+import android.content.Context;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelSettings;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelStudent;
 import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelStateTesting;
 import com.example.stanislavk.profpref.ui.afterresult.views.AfterResultView;
 import com.example.stanislavk.profpref.ui.base.presenters.BasePresenter;
+import com.example.stanislavk.profpref.utils.SharedPreferenceUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,7 +53,7 @@ public class AfterResultPresenter extends BasePresenter<AfterResultView> {
                 );
     }
 
-    public void setCurrentState(){
+    public void setCurrentState(Context context){
 
         DatabaseReference query = mCoreServices.getFireBaseService().getDatabase()
                 .child(FIREBASE_STUDENTS)
@@ -60,6 +63,8 @@ public class AfterResultPresenter extends BasePresenter<AfterResultView> {
         mModelStateTesting.state = FIREBASE_STUDENT_STATE_ON_INACTIVE;
         mModelStateTesting.current_question = "0";
         mModelStateTesting.current_result = (Integer.parseInt(mCoreServices.getFireBaseService().getModelStateTesting().current_result) + 1) + "";
+
+        SharedPreferenceUtils.getInstance(context).clear();
 
         RxFirebaseDatabase.setValue(query, mModelStateTesting)
                 .subscribe(()->{

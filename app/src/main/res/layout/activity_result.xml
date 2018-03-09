@@ -35,7 +35,7 @@
             android:layout_weight="1" />
 
         <ImageView
-            android:id="@+id/btn_like"
+            android:id="@+id/btn_dislike"
             android:scaleType="fitXY"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -92,7 +92,7 @@
             android:layout_weight="1" />
 
         <ImageView
-            android:id="@+id/btn_dislike"
+            android:id="@+id/btn_like"
             android:scaleType="fitXY"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

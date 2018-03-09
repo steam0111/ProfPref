@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,10 +31,15 @@ import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.setImageFromFB;
 
@@ -75,7 +82,6 @@ public class PreTestActivity extends BaseActivity implements PreTestView {
 
         if (settings.text.equals("true")) {
             mTVtitle.setVisibility(View.VISIBLE);
-            //mIsText = settings.text;
         } else {
             mTVtitle.setVisibility(View.GONE);
 
@@ -98,131 +104,99 @@ public class PreTestActivity extends BaseActivity implements PreTestView {
         ViewTarget targetBTNback = new ViewTarget(mBTNlefttArrow);
         ViewTarget targetBTNnext = new ViewTarget(mBTNrightArrow);
 
+        Button replaceButton = new Button(this);
+        replaceButton.setVisibility(View.GONE);
 
-        final ShowcaseView showCase = new ShowcaseView.Builder(mActivity)
+        ShowcaseView.Builder  svBtnLike = new ShowcaseView.Builder(mActivity)
                 .setTarget(targetBtnLike)
                 .setContentTitle(preTest.title_text_btn_like)
                 .setContentText(preTest.description_text_btn_like)
                 .withHoloShowcase()
-                .setStyle(R.style.CustomShowcaseTheme)
-                .setShowcaseEventListener(new OnShowcaseEventListener() {
-                    @Override
-                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
-                        new ShowcaseView.Builder(mActivity)
-                                .setTarget(targetBtndisLike)
-                                .setContentTitle(preTest.title_text_btn_dislike)
-                                .setContentText(preTest.description_text_btn_dislike)
-                                .withHoloShowcase()
-                                .setStyle(R.style.CustomShowcaseTheme)
-                                .setShowcaseEventListener(new OnShowcaseEventListener() {
-                                    @Override
-                                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
-                                        new ShowcaseView.Builder(mActivity)
-                                                .setTarget(targetBTNStop)
-                                                //.setContentTitle(preTest.title_text_btn_dislike)
-                                                //.setContentText(preTest.description_text_btn_dislike)
-                                                .withHoloShowcase()
-                                                .setStyle(R.style.CustomShowcaseTheme)
-                                                .setShowcaseEventListener(new OnShowcaseEventListener() {
-                                                    @Override
-                                                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                .blockAllTouches()
+                .hideOnTouchOutside()
+                .replaceEndButton(replaceButton)
+                .setStyle(R.style.CustomShowcaseTheme);
 
-                                                        if (settings.swap.equals("true")) {
-                                                            new ShowcaseView.Builder(mActivity)
-                                                                    .setTarget(targetBTNback)
-                                                                    //.setContentTitle(preTest.title_text_btn_dislike)
-                                                                    //.setContentText(preTest.description_text_btn_dislike)
-                                                                    .withHoloShowcase()
-                                                                    .setStyle(R.style.CustomShowcaseTheme)
-                                                                    .setShowcaseEventListener(new OnShowcaseEventListener() {
-                                                                        @Override
-                                                                        public void onShowcaseViewHide(ShowcaseView showcaseView) {
-                                                                            new ShowcaseView.Builder(mActivity)
-                                                                                    .setTarget(targetBTNnext)
-                                                                                    //.setContentTitle(preTest.title_text_btn_dislike)
-                                                                                    //.setContentText(preTest.description_text_btn_dislike)
-                                                                                    .withHoloShowcase()
-                                                                                    .setStyle(R.style.CustomShowcaseTheme)
-                                                                                    .build();
-                                                                        }
+        replaceButton = new Button(this);
+        replaceButton.setVisibility(View.GONE);
 
-                                                                        @Override
-                                                                        public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-                                                                            Intent intent = new Intent(getBaseContext(), TestActivity.class);
-                                                                            startActivity(intent);
-                                                                            finish();
-                                                                        }
+        ShowcaseView.Builder  svDisLike = new ShowcaseView.Builder(mActivity)
+                .setTarget(targetBtndisLike)
+                .setContentTitle(preTest.title_text_btn_dislike)
+                .setContentText(preTest.description_text_btn_dislike)
+                .withHoloShowcase()
+                .blockAllTouches()
+                .hideOnTouchOutside()
+                .replaceEndButton(replaceButton)
+                .setStyle(R.style.CustomShowcaseTheme);
 
-                                                                        @Override
-                                                                        public void onShowcaseViewShow(ShowcaseView showcaseView) {
+        replaceButton = new Button(this);
+        replaceButton.setVisibility(View.GONE);
 
-                                                                        }
+        ShowcaseView.Builder  svArrowRight = new ShowcaseView.Builder(mActivity)
+                .setTarget(targetBTNnext)
+                .setContentTitle(preTest.title_text_btn_next)
+                .setContentText(preTest.description_text_btn_next)
+                .withHoloShowcase()
+                .blockAllTouches()
+                .hideOnTouchOutside()
+                .replaceEndButton(replaceButton)
+                .setStyle(R.style.CustomShowcaseTheme);
 
-                                                                        @Override
-                                                                        public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
+        replaceButton = new Button(this);
+        replaceButton.setVisibility(View.GONE);
 
-                                                                        }
-                                                                    })
-                                                                    .build();
-                                                     } else {
-                                                            Intent intent = new Intent(getBaseContext(), TestActivity.class);
-                                                            startActivity(intent);
-                                                            finish();
-                                                        }
-                                                    }
+        ShowcaseView.Builder  svArrowLeft = new ShowcaseView.Builder(mActivity)
+                .setTarget(targetBTNback)
+                .setContentTitle(preTest.title_text_btn_back)
+                .setContentText(preTest.description_text_btn_back)
+                .withHoloShowcase()
+                .blockAllTouches()
+                .hideOnTouchOutside()
+                .replaceEndButton(replaceButton)
+                .setStyle(R.style.CustomShowcaseTheme);
 
-                                                    @Override
-                                                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+        replaceButton = new Button(this);
+        replaceButton.setVisibility(View.GONE);
 
-                                                    }
+        ShowcaseView.Builder  svBtnStop = new ShowcaseView.Builder(mActivity)
+                .setTarget(targetBTNStop)
+                .setContentTitle(preTest.title_text_btn_stop)
+                .setContentText(preTest.description_text_btn_stop)
+                .withHoloShowcase()
+                .blockAllTouches()
+                .hideOnTouchOutside()
+                .replaceEndButton(replaceButton)
+                .setStyle(R.style.CustomShowcaseTheme);
 
-                                                    @Override
-                                                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+        ArrayList<ShowcaseView.Builder> svInterface = new ArrayList<>();
 
-                                                    }
+        svInterface.add(svBtnLike);
+        svInterface.add(svDisLike);
+        svInterface.add(svArrowRight);
+        svInterface.add(svArrowLeft);
+        svInterface.add(svBtnStop);
 
-                                                    @Override
-                                                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
+        final ShowcaseView[] showcaseBufferView = {null};
 
-                                                    }
-                                                })
-                                                .build();
+        Observable
+                .interval(0,3, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(second -> {
 
-                                    }
+                    if (Integer.parseInt(second.toString()) == svInterface.size()) {
+                        Intent intent = new Intent(getBaseContext(), TestActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else if (Integer.parseInt(second.toString()) < svInterface.size()) {
 
-                                    @Override
-                                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+                        if (showcaseBufferView[0] != null) {
+                            showcaseBufferView[0].hide();
+                        }
 
-                                    }
-
-                                    @Override
-                                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
-
-                                    }
-
-                                    @Override
-                                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
-
-                                    }
-                                })
-                                .build();
+                        showcaseBufferView[0] = svInterface.get(Integer.parseInt(second.toString())).build();
                     }
-
-                    @Override
-                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-
-                    }
-
-                    @Override
-                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
-
-                    }
-
-                    @Override
-                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
-
-                    }
-                })
-                .build();
+                });
     }
 }
