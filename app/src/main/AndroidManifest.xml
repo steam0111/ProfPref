@@ -18,24 +18,33 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.login.activties.LoginActivity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".ui.pretest.activities.PreTestActivity"
-                  android:screenOrientation="landscape">
+                  android:screenOrientation="landscape"
+                  android:launchMode="singleInstance">
         </activity>
+
         <activity android:name=".ui.test.activities.TestActivity"
-            android:screenOrientation="landscape">
+                  android:screenOrientation="landscape"
+                  android:launchMode="singleInstance">
         </activity>
+
         <activity android:name=".ui.results.activities.ResultsActivity"
-            android:screenOrientation="landscape">
+                  android:screenOrientation="landscape"
+                  android:launchMode="singleInstance">
         </activity>
+
         <activity android:name=".ui.afterresult.activties.AfterResultActivity"
-            android:screenOrientation="landscape">
+                  android:screenOrientation="landscape"
+                  android:launchMode="singleInstance">
         </activity>
     </application>
 
