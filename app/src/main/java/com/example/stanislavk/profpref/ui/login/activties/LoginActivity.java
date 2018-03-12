@@ -5,10 +5,15 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MotionEventCompat;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -23,6 +28,7 @@ import com.example.stanislavk.profpref.ui.login.views.LoginView;
 import com.example.stanislavk.profpref.ui.pretest.activities.PreTestActivity;
 import com.example.stanislavk.profpref.ui.results.activities.ResultsActivity;
 import com.example.stanislavk.profpref.ui.test.activities.TestActivity;
+import com.example.stanislavk.profpref.utils.OnSwipeTouchListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
@@ -54,6 +60,8 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @BindView(R.id.tv_info) TextView mTVinfo;
     @BindView(R.id.iv_info) ImageView mIVinfo;
+
+    @BindView(R.id.cl_main) ConstraintLayout mCLmain;
 
 
     private ArrayList<ImageView> mKeysBoardImages = new ArrayList<>();
@@ -220,15 +228,26 @@ public class LoginActivity extends BaseActivity implements LoginView {
         });
 
         setKeysBoardImages(mKeysBoardImages);
+
+        mCLmain.setOnTouchListener(new OnSwipeTouchListener(this) {
+
+            @Override
+            public void onSwipeLeft() {
+                if (mLogin.length() != 7) {
+                    onDropInputField(LoginPresenter.DROP_LOGIN);
+                } else if (mPassword.length() != 7) {
+                    onDropInputField(LoginPresenter.DROP_PASSWORD);
+                }
+            }
+
+        });
+
     }
-
-
 
     @Override
     public void onNextScreen() {
         Intent intent = new Intent(this, PreTestActivity.class);
         startActivity(intent);
-        Toast.makeText(getBaseContext(),"Авторизация успешна",Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -280,17 +299,15 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @Override
     public void onDropInputField(int type) {
+
+        for (ImageView imageView : mKeysInputImages) {
+            imageView.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.activity_login_cell_drawable));
+            setPulseAnimation(imageView);
+        }
+
         if (type == LoginPresenter.DROP_LOGIN) {
-            for (ImageView imageView : mKeysInputImages) {
-                imageView.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.activity_login_cell_drawable));
-                setPulseAnimation(imageView);
-            }
             mLogin = "";
         } else {
-
-            for (ImageView object : mKeysInputImages) {
-                object.setVisibility(View.GONE);
-            }
             mPassword = "";
         }
 
@@ -364,11 +381,12 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
         ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
                 iv,
-                PropertyValuesHolder.ofFloat("scaleX", 1.15f),
-                PropertyValuesHolder.ofFloat("scaleY", 1.15f));
-        scaleDown.setDuration(310);
+                PropertyValuesHolder.ofFloat("scaleX", 1.06f),
+                PropertyValuesHolder.ofFloat("scaleY", 1.06f));
 
-        scaleDown.setRepeatCount(5);
+        scaleDown.setDuration(350);
+
+        scaleDown.setRepeatCount(3);
         scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
 
         scaleDown.start();

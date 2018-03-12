@@ -134,7 +134,7 @@ public class ResultsActivity extends BaseActivity implements ResultsView, Dialog
     public void dislike() {
 
         mMPLikeDislike.start();
-        
+
         mPresenter.setAnswer(mVPtest.getCurrentItem(), -1);
 
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);

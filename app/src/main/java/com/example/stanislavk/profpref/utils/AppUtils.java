@@ -2,6 +2,7 @@ package com.example.stanislavk.profpref.utils;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.view.GestureDetector;
 import android.view.View;
 
 /**
@@ -33,4 +34,5 @@ public class AppUtils {
         scaleAnim.start();
 
     }
+
 }

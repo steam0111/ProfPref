@@ -9,8 +9,10 @@
     android:animateLayoutChanges="true"
     android:background="@drawable/login_activity_sky_for_back"
     android:paddingTop="25dp"
+    android:clickable="true"
     tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="0dp">
+    tools:layout_editor_absoluteY="0dp"
+    android:focusable="true">
 
     <ProgressBar
         android:id="@+id/progressBar"
