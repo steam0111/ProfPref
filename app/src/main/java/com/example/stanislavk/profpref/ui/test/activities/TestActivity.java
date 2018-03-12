@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -51,13 +52,16 @@ import com.google.firebase.storage.StorageReference;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.FIREBASE_TESTS;
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.setImageFromFB;
+import static com.example.stanislavk.profpref.utils.AppUtils.animationScaleUpDown;
 
 /**
  * Created by LasVegas on 09.07.2017.
@@ -99,6 +103,9 @@ public class TestActivity extends BaseActivity
 
     private DialogExit mDialogExit;
 
+    private MediaPlayer mMPLikeDislike;
+    private MediaPlayer mMPArrowLeftRight;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,13 +125,23 @@ public class TestActivity extends BaseActivity
         mVPtest.setAdapter(mPagerAdapter);
         mVPtest.setPageTransformer(true, new ForegroundToBackgroundTransformer());
 
+        mMPLikeDislike = MediaPlayer.create(this, R.raw.like_dislike);
+        mMPArrowLeftRight = MediaPlayer.create(this, R.raw.left_right);
+
         mVPtest.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
             public void onPageSelected(int position) {
                 mTVtitle.setText(mPresenter.getAnswers().get(position).getTitle());
                 if (mTTSobject != null) {
-                    mTTSobject.speak(mPresenter.getAnswers().get(position).getTitle(), TextToSpeech.QUEUE_FLUSH, null);
+
+                    io.reactivex.Observable
+                            .intervalRange(0, 1, 1500, 500, TimeUnit.MILLISECONDS)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(number -> {
+                                mTTSobject.speak(mPresenter.getAnswers().get(position).getTitle(), TextToSpeech.QUEUE_FLUSH, null);
+                            });
+
                 }
             }
 
@@ -161,6 +178,8 @@ public class TestActivity extends BaseActivity
 
     @OnClick(R.id.btn_like)
     public void like() {
+        mMPLikeDislike.start();
+
         mPresenter.setAnswer(mVPtest.getCurrentItem(), 1, mAverageHappines, mCurrentHappines);
 
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
@@ -170,11 +189,13 @@ public class TestActivity extends BaseActivity
         mBTNlike.setClickable(false);
         mBTNdislike.setClickable(false);
 
-        mCurrentAnimation=0;
+        mCurrentAnimation = 0;
     }
 
     @OnClick(R.id.btn_dislike)
     public void dislike() {
+        mMPLikeDislike.start();
+
         mPresenter.setAnswer(mVPtest.getCurrentItem(), -1, mAverageHappines, mCurrentHappines);
 
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
@@ -189,16 +210,29 @@ public class TestActivity extends BaseActivity
 
     @OnClick(R.id.btn_left_arrow)
     public void arrowLeft() {
+
+        mMPArrowLeftRight.start();
+
         mPresenter.setAnswer(mVPtest.getCurrentItem(), 0, mAverageHappines, mCurrentHappines);
 
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() - 1);
+
+        mBTNlefttArrow.animate().scaleX(1.1f).scaleY(1.1f).setDuration(1000).start();
+        mBTNlefttArrow.animate().scaleX(1f).scaleY(1f).setDuration(500).start();
+
+        animationScaleUpDown(mBTNlefttArrow, 1.3f, 1f, 750);
     }
 
     @OnClick(R.id.btn_right_arrow)
     public void arrowRight() {
+
+        mMPArrowLeftRight.start();
+
         mPresenter.setAnswer(mVPtest.getCurrentItem(), 0, mAverageHappines, mCurrentHappines);
 
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
+
+        animationScaleUpDown(mBTNrightArrow, 1.3f, 1f, 750);
     }
 
     @OnClick(R.id.btn_stop)

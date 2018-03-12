@@ -2,6 +2,7 @@ package com.example.stanislavk.profpref.ui.results.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -31,6 +32,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.setImageFromFB;
+import static com.example.stanislavk.profpref.utils.AppUtils.animationScaleUpDown;
 
 public class ResultsActivity extends BaseActivity implements ResultsView, DialogExit.onDialogAction{
 
@@ -49,6 +51,9 @@ public class ResultsActivity extends BaseActivity implements ResultsView, Dialog
     private int mCurrentAnimation = 0;
 
     private DialogExit mDialogExit;
+
+    private MediaPlayer mMPLikeDislike;
+    private MediaPlayer mMPArrowLeftRight;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +75,9 @@ public class ResultsActivity extends BaseActivity implements ResultsView, Dialog
 
         mFadeInAnimation.setAnimationListener(animationFadeInListener);
         mFadeOutAnimation.setAnimationListener(animationFadeOutListener);
+
+        mMPLikeDislike = MediaPlayer.create(this, R.raw.like_dislike);
+        mMPArrowLeftRight = MediaPlayer.create(this, R.raw.left_right);
     }
 
     @Override
@@ -108,6 +116,9 @@ public class ResultsActivity extends BaseActivity implements ResultsView, Dialog
 
     @OnClick(R.id.btn_like)
     public void like() {
+
+        mMPLikeDislike.start();
+
         mPresenter.setAnswer(mVPtest.getCurrentItem(), 1);
 
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
@@ -117,10 +128,13 @@ public class ResultsActivity extends BaseActivity implements ResultsView, Dialog
         mBTNlike.setClickable(false);
         mBTNdislike.setClickable(false);
 
-        mCurrentAnimation=0;
+        mCurrentAnimation = 0;
     }
     @OnClick(R.id.btn_dislike)
     public void dislike() {
+
+        mMPLikeDislike.start();
+        
         mPresenter.setAnswer(mVPtest.getCurrentItem(), -1);
 
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
@@ -134,14 +148,23 @@ public class ResultsActivity extends BaseActivity implements ResultsView, Dialog
     }
     @OnClick(R.id.btn_left_arrow)
     public void arrowLeft() {
+
+        mMPArrowLeftRight.start();
+
         mPresenter.setAnswer(mVPtest.getCurrentItem(), 0);
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() - 1);
+
+        animationScaleUpDown(mBTNlefttArrow, 1.3f, 1f, 750);
     }
     @OnClick(R.id.btn_right_arrow)
     public void arrowRight() {
+
+        mMPArrowLeftRight.start();
+
         mPresenter.setAnswer(mVPtest.getCurrentItem(), 0);
         mVPtest.setCurrentItem(mVPtest.getCurrentItem() + 1);
 
+        animationScaleUpDown(mBTNrightArrow, 1.3f, 1f, 750);
     }
     @OnClick(R.id.btn_stop)
     public void stop() {
