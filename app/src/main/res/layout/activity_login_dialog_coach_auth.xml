@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="Coach Auth"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:id="@+id/et_login"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:textSize="16sp"
+        android:layout_marginTop="6dp"
+        android:hint="Login"/>
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:textSize="16sp"
+        android:layout_marginTop="6dp"
+        android:hint="Password"/>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="6dp"
+        android:text="Login"/>
+
+</LinearLayout>

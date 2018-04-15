@@ -1,6 +1,8 @@
 package com.example.stanislavk.profpref.ui.login.presenters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.example.stanislavk.profpref.di.services.firebase.models.ModelStudent;
@@ -9,12 +11,14 @@ import com.example.stanislavk.profpref.di.services.firebase.models.ModelSettings
 import com.example.stanislavk.profpref.di.services.firebase.models.Test.ModelStateTesting;
 import com.example.stanislavk.profpref.ui.login.views.LoginView;
 import com.example.stanislavk.profpref.utils.SharedPreferenceUtils;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import durdinapps.rxfirebase2.RxFirebaseAuth;
@@ -38,8 +42,25 @@ public class LoginPresenter extends BasePresenter<LoginView> {
   public static int DROP_LOGIN = 0;
   public static int DROP_PASSWORD = 1;
 
-  private ModelStudent mModelStudent = new ModelStudent();
+  private ModelStudent mCurrentStudent = new ModelStudent();
   private SharedPreferenceUtils mSharedPreferenceUtils;
+
+  private ArrayList<ModelStudent> mStudentsList= new ArrayList<ModelStudent> ();
+
+  private String TAG_ERROR = "LoginPresenter";
+
+
+  public LoginPresenter() {
+
+      FirebaseUser coachCash = mCoreServices.getFireBaseService().getAuth().getCurrentUser();
+
+      if (coachCash != null) {
+          getUsersFromFB(coachCash);
+      } else {
+          getViewState().onShowCoachLoginDialog();
+      }
+
+  }
 
   public void checkAuthFromSharedPref(Context context) {
       mSharedPreferenceUtils = SharedPreferenceUtils.getInstance(context);
@@ -48,45 +69,107 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
       if (!studentKey.equals("")) {
           String studentPass = mSharedPreferenceUtils.getStringValue("password", "");
-          mModelStudent.setKey(studentKey);
+          mCurrentStudent.setKey(studentKey);
           checkPassword(studentPass);
 
       }
   }
 
+  @SuppressLint("CheckResult")
+  public void coachLogin(String login, String password) {
+
+      login = login.trim();
+
+      RxFirebaseAuth.signInWithEmailAndPassword(mCoreServices.getFireBaseService().getAuth(),
+              login, password.trim())
+              .subscribe(coach-> {
+                  getUsersFromFB(coach.getUser());
+              }, throwable -> {
+                  Log.e(TAG_ERROR, throwable.toString());
+              });
+
+  }
+
+  private void getUsersFromFB(FirebaseUser coach) {
+      Query userSearchQuery =  mCoreServices.getFireBaseService().getDatabase()
+              .child(FIREBASE_STUDENTS)
+              .orderByChild("trainer_ID")
+              .equalTo(coach.getUid());
+
+      RxFirebaseDatabase.observeSingleValueEvent(userSearchQuery)
+              .subscribe(students -> {
+                  for (DataSnapshot postSnapshot: students.getChildren()) {
+
+                      ModelStudent student = new ModelStudent();
+                      student.setKey(postSnapshot.getKey());
+                      student.setLogin(postSnapshot.child("login").getValue().toString());
+
+                      mStudentsList.add(student);
+                  }
+              });
+
+  }
+
+  @SuppressLint("CheckResult")
   public void checkLogin(String login) {
 
+      for (ModelStudent student : mStudentsList) {
+          if (student.getLogin().length() > 2 &&
+              login.equals(student.getLogin().substring(0,3))) {
 
-      RxFirebaseAuth.signInWithEmailAndPassword(mCoreServices.getFireBaseService().getAuth(),"android@gmail.com", "eqwdsfSAsadadsAsd1")
-              .subscribe(admin -> {
+              mCurrentStudent.setKey(student.getKey());
+              mSharedPreferenceUtils.setValue("studentKey", student.getKey());
 
-                  Query userSearchQuery =  mCoreServices.getFireBaseService().getDatabase()
-                          .child(FIREBASE_STUDENTS)
-                          .orderByChild("login")
-                          .equalTo(login);
+              mCoreServices.getFireBaseService().setModelStudent(mCurrentStudent);
 
-                  RxFirebaseDatabase.observeSingleValueEvent(userSearchQuery)
-                          .subscribe(student -> {
-                              if (student.getValue() != null) {
-                                  String key = student.getValue().toString().substring(1,student.getValue().toString().indexOf("=", 10));
-                                  mModelStudent.setKey(key);
+              Query query = mCoreServices.getFireBaseService().getDatabase()
+                      .child(FIREBASE_STUDENTS)
+                      .child(mCurrentStudent.getKey())
+                      .orderByKey()
+                      .equalTo(FIREBASE_STUDENT_COUNTER_LOGIN);
 
-                                  mSharedPreferenceUtils.setValue("studentKey", key);
+              query.addListenerForSingleValueEvent(new ValueEventListener() {
 
-                                  getViewState().onSetupPasswordMode();
+                  @Override
+                  public void onDataChange(DataSnapshot dataSnapshot) {
+                      long counter = 0;
+                      if(dataSnapshot.getValue() == null){
+                          RxFirebaseDatabase.setValue(mCoreServices.getFireBaseService().getDatabase().child(FIREBASE_STUDENTS)
+                                  .child(mCurrentStudent.getKey())
+                                  .child(FIREBASE_STUDENT_COUNTER_LOGIN), counter).subscribe(
+                                  () -> {
+                                      getCurrentTest(mCoreServices.getFireBaseService().getDatabase(),
+                                              mCoreServices.getFireBaseService().getCurrentUser().getKey());
+                                  });
+                      } else {
 
-                              } else {
-                                  getViewState().onDropInputField(DROP_LOGIN);
-                                  getViewState().onInVisibleProgressBar();
-                              }
-                          });
+                          HashMap counter_value =  (HashMap) dataSnapshot.getValue();
+                          counter = (long)counter_value.get(FIREBASE_STUDENT_COUNTER_LOGIN);
+                          counter++;
+
+                          RxFirebaseDatabase.setValue(mCoreServices.getFireBaseService().getDatabase().child(FIREBASE_STUDENTS)
+                                  .child(mCurrentStudent.getKey())
+                                  .child(FIREBASE_STUDENT_COUNTER_LOGIN), counter).subscribe(
+                                  () -> {
+                                      getCurrentTest(mCoreServices.getFireBaseService().getDatabase(),
+                                              mCoreServices.getFireBaseService().getCurrentUser().getKey());
+                                  });
+                      }
+                  }
+
+                  @Override
+                  public void onCancelled(DatabaseError databaseError) {
+
+                  }
               });
+          }
+      }
   }
 
   public void checkPassword(String passwrod) {
       Query password =  mCoreServices.getFireBaseService().getDatabase()
               .child(FIREBASE_STUDENTS)
-              .child(mModelStudent.getKey())
+              .child(mCurrentStudent.getKey())
               .child("password");
 
       RxFirebaseDatabase.observeSingleValueEvent(password, String.class)
@@ -96,11 +179,11 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
                       mSharedPreferenceUtils.setValue("password", uesrPassword);
 
-                      mCoreServices.getFireBaseService().setModelStudent(mModelStudent);
+                      mCoreServices.getFireBaseService().setModelStudent(mCurrentStudent);
 
                       Query query = mCoreServices.getFireBaseService().getDatabase()
                               .child(FIREBASE_STUDENTS)
-                              .child(mModelStudent.getKey())
+                              .child(mCurrentStudent.getKey())
                               .orderByKey()
                               .equalTo(FIREBASE_STUDENT_COUNTER_LOGIN);
 
@@ -111,7 +194,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                               long counter = 0;
                               if(dataSnapshot.getValue() == null){
                                   RxFirebaseDatabase.setValue(mCoreServices.getFireBaseService().getDatabase().child(FIREBASE_STUDENTS)
-                                          .child(mModelStudent.getKey())
+                                          .child(mCurrentStudent.getKey())
                                           .child(FIREBASE_STUDENT_COUNTER_LOGIN), counter).subscribe(
                                           () -> {
                                               getCurrentTest(mCoreServices.getFireBaseService().getDatabase(),
@@ -124,7 +207,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                                   counter++;
 
                                   RxFirebaseDatabase.setValue(mCoreServices.getFireBaseService().getDatabase().child(FIREBASE_STUDENTS)
-                                          .child(mModelStudent.getKey())
+                                          .child(mCurrentStudent.getKey())
                                           .child(FIREBASE_STUDENT_COUNTER_LOGIN), counter).subscribe(
                                           () -> {
                                               getCurrentTest(mCoreServices.getFireBaseService().getDatabase(),

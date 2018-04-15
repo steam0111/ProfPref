@@ -12,9 +12,14 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,6 +28,7 @@ import android.widget.Toast;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.stanislavk.profpref.R;
 import com.example.stanislavk.profpref.ui.base.activities.BaseActivity;
+import com.example.stanislavk.profpref.ui.login.fragments.DialogCoachAuthFragment;
 import com.example.stanislavk.profpref.ui.login.presenters.LoginPresenter;
 import com.example.stanislavk.profpref.ui.login.views.LoginView;
 import com.example.stanislavk.profpref.ui.pretest.activities.PreTestActivity;
@@ -38,7 +44,8 @@ import butterknife.ButterKnife;
 
 import static com.example.stanislavk.profpref.di.services.firebase.FireBaseService.setImageFromFB;
 
-public class LoginActivity extends BaseActivity implements LoginView {
+public class LoginActivity extends BaseActivity implements LoginView,
+                                                           DialogCoachAuthFragment.DialogCoachAuthFragmentListener {
 
     @InjectPresenter LoginPresenter mPresenter;
 
@@ -69,8 +76,6 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     private String mPassword = "";
     private String mLogin = "";
-
-    FirebaseStorage storageRef = FirebaseStorage.getInstance();
 
     @BindView(R.id.progressBar) ProgressBar mProgressBar;
 
@@ -109,7 +114,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("1");
             }
 
-            if (mLogin.length() == 7 && mPassword.length() == 0) {
+            if (mLogin.length() == 3 && mPassword.length() == 0) {
                 mPresenter.checkLogin(mLogin);
             }
 
@@ -127,7 +132,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("2");
             }
 
-            if (mLogin.length() == 7 && mPassword.length() == 0) {
+            if (mLogin.length() == 3 && mPassword.length() == 0) {
                 mPresenter.checkLogin(mLogin);
             }
 
@@ -145,7 +150,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("3");
             }
 
-            if (mLogin.length() == 7 && mPassword.length() == 0) {
+            if (mLogin.length() == 3 && mPassword.length() == 0) {
                 mPresenter.checkLogin(mLogin);
             }
 
@@ -163,7 +168,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("4");
             }
 
-            if (mLogin.length() == 7 && mPassword.length() == 0) {
+            if (mLogin.length() == 3 && mPassword.length() == 0) {
                 mPresenter.checkLogin(mLogin);
             }
 
@@ -181,7 +186,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("5");
             }
 
-            if (mLogin.length() == 7 && mPassword.length() == 0) {
+            if (mLogin.length() == 3 && mPassword.length() == 0) {
                 mPresenter.checkLogin(mLogin);
             }
 
@@ -200,7 +205,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("6");
             }
 
-            if (mLogin.length() == 7 && mPassword.length() == 0) {
+            if (mLogin.length() == 3 && mPassword.length() == 0) {
                 mPresenter.checkLogin(mLogin);
             }
 
@@ -218,7 +223,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 mPassword = mPassword.concat("7");
             }
 
-            if (mLogin.length() == 7 && mPassword.length() == 0) {
+            if (mLogin.length() == 3 && mPassword.length() == 0) {
                 mPresenter.checkLogin(mLogin);
             }
 
@@ -241,7 +246,6 @@ public class LoginActivity extends BaseActivity implements LoginView {
             }
 
         });
-
     }
 
     @Override
@@ -377,6 +381,11 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     }
 
+    @Override
+    public void onShowCoachLoginDialog() {
+        new DialogCoachAuthFragment().show(getSupportFragmentManager(), "DialogCoachAuthFragment");
+    }
+
     private void setPulseAnimation(ImageView iv) {
 
         ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
@@ -410,11 +419,6 @@ public class LoginActivity extends BaseActivity implements LoginView {
         keyBoardImages.get(4).setImageResource(R.drawable.activity_login_keyboard_5);
         keyBoardImages.get(5).setImageResource(R.drawable.activity_login_keyboard_6);
         keyBoardImages.get(6).setImageResource(R.drawable.activity_login_keyboard_7);
-    }
-
-    private void setImageToTargetFromFB(ImageView target, int numberImage){
-        String reference = "entrance/" + (numberImage) + ".png";
-        setImageFromFB(getBaseContext(), target, storageRef.getReference(reference));
     }
 
     private void setImageToTargetFromLocal(ImageView target, int numberImage){
@@ -470,5 +474,10 @@ public class LoginActivity extends BaseActivity implements LoginView {
         animSetXY.play(fadeAnimObject);
         animSetXY.setDuration(1200);
         animSetXY.start();
+    }
+
+    @Override
+    public void coachLogin(String login, String password) {
+        mPresenter.coachLogin(login, password);
     }
 }
